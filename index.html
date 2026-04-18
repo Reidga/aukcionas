@@ -155,7 +155,10 @@ function updateAuthUi() {
     const loggedIn = localStorage.getItem("loggedIn") === "true";
     const logoutLink = document.getElementById("logoutLink");
 
-    if (!logoutLink) return;
+    if (!logoutLink) {
+        console.warn("Nerasta atsijungimo nuoroda");
+        return;
+    }
 
     logoutLink.style.display = loggedIn ? "inline" : "none";
 }
