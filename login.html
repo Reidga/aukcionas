@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prisijungimas</title>
+    <style>
+        body {
+            background: #111;
+            color: white;
+            font-family: Arial;
+            text-align: center;
+            padding: 100px;
+        }
+
+        input {
+            display: block;
+            margin: 10px auto;
+            padding: 10px;
+            width: 200px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: orange;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Prisijungti / Registruotis</h1>
+
+<input type="text" id="email" placeholder="Email">
+<input type="password" id="password" placeholder="Slaptažodis">
+
+<button onclick="register()">Registruotis</button>
+<button onclick="login()">Prisijungti</button>
+
+<script>
+function register() {
+    let email = document.getElementById("email").value;
+    let pass = document.getElementById("password").value;
+
+    localStorage.setItem("userEmail", email);
+    localStorage.setItem("userPass", pass);
+
+    alert("Registracija sėkminga!");
+}
+
+function login() {
+    let email = document.getElementById("email").value;
+    let pass = document.getElementById("password").value;
+
+    let savedEmail = localStorage.getItem("userEmail");
+    let savedPass = localStorage.getItem("userPass");
+
+    if(email === savedEmail && pass === savedPass) {
+        localStorage.setItem("loggedIn", "true");
+        alert("Prisijungta!");
+        window.location.href = "index.html";
+    } else {
+        alert("Neteisingi duomenys");
+    }
+}
+</script>
+
+</body>
+</html>
