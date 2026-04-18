@@ -155,10 +155,12 @@ function updateAuthUi() {
     const loggedIn = localStorage.getItem("loggedIn") === "true";
     const logoutLink = document.getElementById("logoutLink");
 
+    if (!logoutLink) return;
+
     logoutLink.style.display = loggedIn ? "inline" : "none";
 }
 
-updateAuthUi();
+document.addEventListener("DOMContentLoaded", updateAuthUi);
     </script>
 
 </body>
