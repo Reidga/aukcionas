@@ -1,10 +1,132 @@
 <!DOCTYPE html>
-<html>
+<html lang="lt">
 <head>
-    <title>Mano pirmas puslapis</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aukcionai</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            background: #111;
+            color: white;
+        }
+
+        header {
+            background: #000;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: orange;
+        }
+
+        nav a {
+            color: white;
+            margin-left: 20px;
+            text-decoration: none;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(black, #222);
+        }
+
+        .hero h1 {
+            font-size: 40px;
+        }
+
+        .hero button {
+            margin-top: 20px;
+            padding: 12px 25px;
+            font-size: 18px;
+            background: orange;
+            border: none;
+            cursor: pointer;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 40px;
+        }
+
+        .card {
+            background: #1c1c1c;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .card img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .price {
+            color: orange;
+            font-size: 20px;
+        }
+
+        .bid-btn {
+            margin-top: 10px;
+            padding: 10px;
+            width: 100%;
+            background: orange;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
-<body style="text-align:center; margin-top:100px; font-family:Arial;">
-    <h1>🔥 Mano pirmas tinklapis 🔥</h1>
-    <p>Veikia!</p>
+
+<body>
+
+<header>
+    <div class="logo">🔥 Aukcionas</div>
+    <nav>
+        <a href="#">Pagrindinis</a>
+        <a href="#">Aukcionai</a>
+        <a href="#">Prisijungti</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>Rask geriausius pasiūlymus 🔥</h1>
+    <p>Automobilių aukcionai internetu</p>
+    <button>Žiūrėti aukcionus</button>
+</section>
+
+<section class="grid">
+
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1502877338535-766e1452684a">
+        <h3>BMW 320</h3>
+        <p class="price">1500€</p>
+        <button class="bid-btn">Statyti kainą</button>
+    </div>
+
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1493238792000-8113da705763">
+        <h3>Audi A6</h3>
+        <p class="price">2200€</p>
+        <button class="bid-btn">Statyti kainą</button>
+    </div>
+
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c">
+        <h3>Mercedes E200</h3>
+        <p class="price">3000€</p>
+        <button class="bid-btn">Statyti kainą</button>
+    </div>
+
+</section>
+
 </body>
 </html>
