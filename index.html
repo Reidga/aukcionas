@@ -136,6 +136,15 @@
 
 <script>
 function openCar(name, price, image) {
+
+    let loggedIn = localStorage.getItem("loggedIn");
+
+    if(loggedIn !== "true") {
+        alert("Pirmiausia prisijunk!");
+        window.location.href = "login.html";
+        return;
+    }
+
     localStorage.setItem("carName", name);
     localStorage.setItem("carPrice", price);
     localStorage.setItem("carImage", image);
