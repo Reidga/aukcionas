@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aukcionai</title>
+    <title>Aukcionas</title>
 
     <style>
         body {
@@ -109,24 +109,40 @@
         <img src="https://images.unsplash.com/photo-1502877338535-766e1452684a">
         <h3>BMW 320</h3>
         <p class="price">1500€</p>
-        <button class="bid-btn">Statyti kainą</button>
+        <button class="bid-btn" onclick="openCar('BMW 320', 1500, 'https://images.unsplash.com/photo-1502877338535-766e1452684a')">
+            Statyti kainą
+        </button>
     </div>
 
     <div class="card">
         <img src="https://images.unsplash.com/photo-1493238792000-8113da705763">
         <h3>Audi A6</h3>
         <p class="price">2200€</p>
-        <button class="bid-btn">Statyti kainą</button>
+        <button class="bid-btn" onclick="openCar('Audi A6', 2200, 'https://images.unsplash.com/photo-1493238792000-8113da705763')">
+            Statyti kainą
+        </button>
     </div>
 
     <div class="card">
         <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c">
         <h3>Mercedes E200</h3>
         <p class="price">3000€</p>
-        <button class="bid-btn">Statyti kainą</button>
+        <button class="bid-btn" onclick="openCar('Mercedes E200', 3000, 'https://images.unsplash.com/photo-1511919884226-fd3cad34687c')">
+            Statyti kainą
+        </button>
     </div>
 
 </section>
+
+<script>
+function openCar(name, price, image) {
+    localStorage.setItem("carName", name);
+    localStorage.setItem("carPrice", price);
+    localStorage.setItem("carImage", image);
+
+    window.location.href = "car.html";
+}
+</script>
 
 </body>
 </html>
