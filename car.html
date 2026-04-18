@@ -62,6 +62,14 @@
     document.getElementById("carImage").src = image;
 
     function bid() {
+        let loggedIn = localStorage.getItem("loggedIn");
+
+        if(loggedIn !== "true") {
+            alert("Pirmiausia prisijunk!");
+            window.location.href = "login.html";
+            return;
+        }
+
         let bidAmount = parseInt(document.getElementById("bidInput").value);
         price += bidAmount;
 
