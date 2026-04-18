@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aukcionas</title>
 
-    <style>
+    <style>I
         body {
             margin: 0;
             font-family: Arial;
@@ -39,18 +39,18 @@
             background: linear-gradient(black, #222);
         }
 
-        .hero h1 {
-            font-size: 40px;
-        }
+            .hero h1 {
+                font-size: 40px;
+            }
 
-        .hero button {
-            margin-top: 20px;
-            padding: 12px 25px;
-            font-size: 18px;
-            background: orange;
-            border: none;
-            cursor: pointer;
-        }
+            .hero button {
+                margin-top: 20px;
+                padding: 12px 25px;
+                font-size: 18px;
+                background: orange;
+                border: none;
+                cursor: pointer;
+            }
 
         .grid {
             display: grid;
@@ -65,10 +65,10 @@
             border-radius: 10px;
         }
 
-        .card img {
-            width: 100%;
-            border-radius: 10px;
-        }
+            .card img {
+                width: 100%;
+                border-radius: 10px;
+            }
 
         .price {
             color: orange;
@@ -88,53 +88,54 @@
 
 <body>
 
-<header>
-    <div class="logo">🔥 Aukcionas</div>
-    <nav>
-        <a href="#">Pagrindinis</a>
-        <a href="#">Aukcionai</a>
-        <a href="#">Prisijungti</a>
-    </nav>
-</header>
+    <header>
+        <div class="logo">🔥 Aukcionas</div>
+        <nav>
+            <a href="#">Pagrindinis</a>
+            <a href="#">Aukcionai</a>
+            <a href="#">Prisijungti</a>
+            <a href="#" onclick="logout()">Atsijungti</a>
+        </nav>
+    </header>
 
-<section class="hero">
-    <h1>Rask geriausius pasiūlymus 🔥</h1>
-    <p>Automobilių aukcionai internetu</p>
-    <button>Žiūrėti aukcionus</button>
-</section>
+    <section class="hero">
+        <h1>Rask geriausius pasiūlymus 🔥</h1>
+        <p>Automobilių aukcionai internetu</p>
+        <button>Žiūrėti aukcionus</button>
+    </section>
 
-<section class="grid">
+    <section class="grid">
 
-    <div class="card">
-        <img src="https://images.unsplash.com/photo-1502877338535-766e1452684a">
-        <h3>BMW 320</h3>
-        <p class="price">1500€</p>
-        <button class="bid-btn" onclick="openCar('BMW 320', 1500, 'https://images.unsplash.com/photo-1502877338535-766e1452684a')">
-            Statyti kainą
-        </button>
-    </div>
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1502877338535-766e1452684a">
+            <h3>BMW 320</h3>
+            <p class="price">1500€</p>
+            <button class="bid-btn" onclick="openCar('BMW 320', 1500, 'https://images.unsplash.com/photo-1502877338535-766e1452684a')">
+                Statyti kainą
+            </button>
+        </div>
 
-    <div class="card">
-        <img src="https://images.unsplash.com/photo-1493238792000-8113da705763">
-        <h3>Audi A6</h3>
-        <p class="price">2200€</p>
-        <button class="bid-btn" onclick="openCar('Audi A6', 2200, 'https://images.unsplash.com/photo-1493238792000-8113da705763')">
-            Statyti kainą
-        </button>
-    </div>
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1493238792000-8113da705763">
+            <h3>Audi A6</h3>
+            <p class="price">2200€</p>
+            <button class="bid-btn" onclick="openCar('Audi A6', 2200, 'https://images.unsplash.com/photo-1493238792000-8113da705763')">
+                Statyti kainą
+            </button>
+        </div>
 
-    <div class="card">
-        <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c">
-        <h3>Mercedes E200</h3>
-        <p class="price">3000€</p>
-        <button class="bid-btn" onclick="openCar('Mercedes E200', 3000, 'https://images.unsplash.com/photo-1511919884226-fd3cad34687c')">
-            Statyti kainą
-        </button>
-    </div>
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c">
+            <h3>Mercedes E200</h3>
+            <p class="price">3000€</p>
+            <button class="bid-btn" onclick="openCar('Mercedes E200', 3000, 'https://images.unsplash.com/photo-1511919884226-fd3cad34687c')">
+                Statyti kainą
+            </button>
+        </div>
 
-</section>
+    </section>
 
-<script>
+    <script>
 function openCar(name, price, image) {
 
     let loggedIn = localStorage.getItem("loggedIn");
@@ -151,7 +152,12 @@ function openCar(name, price, image) {
 
     window.location.href = "car.html";
 }
-</script>
+
+function logout() {
+    localStorage.setItem("loggedIn", "false");
+    alert("Atsijungta");
+}
+    </script>
 
 </body>
 </html>
