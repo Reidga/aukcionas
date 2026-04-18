@@ -94,7 +94,7 @@
             <a href="#">Pagrindinis</a>
             <a href="#">Aukcionai</a>
             <a href="#">Prisijungti</a>
-            <a href="#" onclick="logout()">Atsijungti</a>
+            <a href="#" id="logoutLink" onclick="logout()">Atsijungti</a>
         </nav>
     </header>
 
@@ -146,9 +146,19 @@ function openCar(name, price, image) {
 }
 
 function logout() {
-    localStorage.setItem("loggedIn", "false");
+    localStorage.removeItem("loggedIn");
     alert("Atsijungta");
+    window.location.href = "login.html";
 }
+
+function updateAuthUi() {
+    const loggedIn = localStorage.getItem("loggedIn") === "true";
+    const logoutLink = document.getElementById("logoutLink");
+
+    logoutLink.style.display = loggedIn ? "inline" : "none";
+}
+
+updateAuthUi();
     </script>
 
 </body>
