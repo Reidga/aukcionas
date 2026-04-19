@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automobilis</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #111;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 32px;
+            box-sizing: border-box;
+        }
+
+        .box {
+            max-width: 760px;
+            margin: 0 auto;
+            background: #1b1b1b;
+            border-radius: 8px;
+            padding: 28px;
+        }
+
+        .image-viewer {
+            display: grid;
+            grid-template-columns: 56px minmax(0, 1fr) 56px;
+            gap: 16px;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .main-image-wrap {
+            width: 100%;
+            max-width: 560px;
+            min-height: 360px;
+            background: #101010;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 12px;
+            box-sizing: border-box;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 100%;
+            max-height: 520px;
+            object-fit: contain;
+            border-radius: 8px;
+            cursor: zoom-in;
+        }
+
+        .gallery-nav {
+            width: 56px;
+            height: 56px;
+            min-width: 56px;
+            border-radius: 50%;
+            padding: 0;
+            font-size: 30px;
+            line-height: 1;
+        }
+
+        .gallery-nav:disabled {
+            opacity: 0.45;
+            cursor: default;
+        }
+
+        .gallery {
+            margin-top: 16px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+        }
+
+        .gallery-thumb {
+            height: 96px;
+            background: #101010;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 6px;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+
+        .gallery-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .price {
+            font-size: 30px;
+            color: orange;
+        }
+
+        .auction-status {
+            margin: 0 auto 24px;
+            max-width: 420px;
+            background: #111;
+            border-radius: 8px;
+            padding: 14px 16px;
+            text-align: left;
+            line-height: 1.55;
+        }
+
+        .auction-status strong {
+            color: orange;
+        }
+
+        .auction-countdown {
+            margin-top: 6px;
+            color: #ffd27a;
+            font-weight: bold;
+        }
+
+        .auction-countdown.auction-ended {
+            color: #ff7b7b;
+        }
+
+        .bid-button-disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 18px;
+            width: 120px;
+            border-radius: 6px;
+            border: 1px solid #333;
+            background: #101010;
+            color: white;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background: orange;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .details {
+            margin: 24px auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            text-align: left;
+        }
+
+        .detail-item {
+            background: #111;
+            border-radius: 8px;
+            padding: 14px;
+        }
+
+        .detail-item strong {
+            display: block;
+            margin-bottom: 6px;
+            color: orange;
+        }
+
+        .comment-box {
+            margin-top: 20px;
+            text-align: left;
+            background: #111;
+            border-radius: 8px;
+            padding: 16px;
+            line-height: 1.6;
+        }
+
+        .comment-box strong {
+            display: block;
+            margin-bottom: 8px;
+            color: orange;
+        }
+
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.88);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
+
+        .lightbox.open {
+            display: flex;
+        }
+
+        .lightbox-content {
+            display: grid;
+            grid-template-columns: 64px minmax(0, 1fr) 64px;
+            align-items: center;
+            gap: 16px;
+            width: 100%;
+            max-width: 1280px;
+        }
+
+        .lightbox img {
+            width: 100%;
+            max-width: min(92vw, 1100px);
+            max-height: 86vh;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 48px;
+            height: 48px;
+            min-width: 48px;
+            border-radius: 50%;
+            padding: 0;
+            font-size: 28px;
+            line-height: 1;
+        }
+
+        .lightbox-nav {
+            width: 56px;
+            height: 56px;
+            min-width: 56px;
+            border-radius: 50%;
+            padding: 0;
+            font-size: 30px;
+            line-height: 1;
+        }
+
+        .lightbox-nav:disabled {
+            opacity: 0.45;
+            cursor: default;
+        }
+
+        .home-link {
+            position: fixed;
+            top: 18px;
+            left: 18px;
+            width: 46px;
+            height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: orange;
+            color: #111;
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+            z-index: 1100;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="home-link" aria-label="I pagrindini puslapi">⌂</a>
+    <div class="box">
+        <h1 id="carName"></h1>
+        <div class="image-viewer">
+            <button id="prevImageBtn" class="gallery-nav" onclick="changeImage(-1)">&lt;</button>
+            <div class="main-image-wrap">
+                <img id="carImage" class="main-image" alt="Automobilio nuotrauka" onclick="openLightbox()">
+            </div>
+            <button id="nextImageBtn" class="gallery-nav" onclick="changeImage(1)">&gt;</button>
+        </div>
+        <div class="gallery" id="carGallery"></div>
+        <p class="price">Kaina: <span id="price"></span> EUR</p>
+        <div class="auction-status" id="auctionStatus"></div>
+        <div class="details" id="carDetails"></div>
+        <div class="comment-box" id="carCommentBox" style="display: none;"></div>
+
+        <p>Kiek nori pakelti:</p>
+        <input type="number" id="bidInput" value="100">
+
+        <br><br>
+
+        <button id="bidButton" onclick="bid()">Statyti kaina</button>
+    </div>
+
+    <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
+        <button class="lightbox-close" onclick="closeLightbox(event)">x</button>
+        <div class="lightbox-content">
+            <button id="lightboxPrevBtn" class="lightbox-nav" onclick="changeImage(-1, true)">&lt;</button>
+            <img id="lightboxImage" alt="Padidinta automobilio nuotrauka">
+            <button id="lightboxNextBtn" class="lightbox-nav" onclick="changeImage(1, true)">&gt;</button>
+        </div>
+    </div>
+
+    <script>
+    const CAR_IMAGE_DB_NAME = "auctionCarImages";
+    const CAR_IMAGE_STORE_NAME = "carImages";
+    const AUCTION_EXTENSION_THRESHOLD_MS = 3 * 60 * 1000;
+    const AUCTION_EXTENSION_MS = 2 * 60 * 1000;
+    const defaultCars = [
+        {
+            id: "default-bmw-320",
+            brand: "BMW",
+            model: "320",
+            title: "BMW 320",
+            year: "2018",
+            power: "184",
+            fuel: "Dyzelis",
+            transmission: "Automatine",
+            drive: "Galiniai",
+            doors: "4",
+            bodyType: "Sedanas",
+            mileage: "165000",
+            color: "Melyna",
+            price: 1500,
+            image: "https://images.unsplash.com/photo-1502877338535-766e1452684a",
+            images: ["https://images.unsplash.com/photo-1502877338535-766e1452684a"]
+        },
+        {
+            id: "default-audi-a6",
+            brand: "Audi",
+            model: "A6",
+            title: "Audi A6",
+            year: "2017",
+            power: "190",
+            fuel: "Dyzelis",
+            transmission: "Automatine",
+            drive: "Priekiniai",
+            doors: "4",
+            bodyType: "Sedanas",
+            mileage: "189000",
+            color: "Juoda",
+            price: 2200,
+            image: "https://images.unsplash.com/photo-1493238792000-8113da705763",
+            images: ["https://images.unsplash.com/photo-1493238792000-8113da705763"]
+        },
+        {
+            id: "default-mercedes-e200",
+            brand: "Mercedes-Benz",
+            model: "E200",
+            title: "Mercedes E200",
+            year: "2019",
+            power: "197",
+            fuel: "Benzinas",
+            transmission: "Automatine",
+            drive: "Galiniai",
+            doors: "4",
+            bodyType: "Sedanas",
+            mileage: "98000",
+            color: "Geltona",
+            price: 3000,
+            image: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c",
+            images: ["https://images.unsplash.com/photo-1511919884226-fd3cad34687c"]
+        }
+    ];
+
+    function getCars() {
+        let cars = JSON.parse(localStorage.getItem("auctionCars"));
+
+        if (!Array.isArray(cars) || cars.length === 0) {
+            localStorage.setItem("auctionCars", JSON.stringify(defaultCars));
+            return [...defaultCars];
+        }
+
+        return cars;
+    }
+
+    function saveCars(cars) {
+        localStorage.setItem("auctionCars", JSON.stringify(cars));
+    }
+
+    function openImageDb() {
+        return new Promise(function(resolve, reject) {
+            let request = indexedDB.open(CAR_IMAGE_DB_NAME, 1);
+
+            request.onupgradeneeded = function(event) {
+                let db = event.target.result;
+
+                if (!db.objectStoreNames.contains(CAR_IMAGE_STORE_NAME)) {
+                    db.createObjectStore(CAR_IMAGE_STORE_NAME);
+                }
+            };
+
+            request.onsuccess = function() {
+                resolve(request.result);
+            };
+
+            request.onerror = function() {
+                reject(request.error);
+            };
+        });
+    }
+
+    function getCarImagesFromDb(carId) {
+        return openImageDb().then(function(db) {
+            return new Promise(function(resolve, reject) {
+                let transaction = db.transaction(CAR_IMAGE_STORE_NAME, "readonly");
+                let store = transaction.objectStore(CAR_IMAGE_STORE_NAME);
+                let request = store.get(carId);
+
+                request.onsuccess = function() {
+                    db.close();
+                    resolve(Array.isArray(request.result) ? request.result : []);
+                };
+
+                request.onerror = function() {
+                    db.close();
+                    reject(request.error);
+                };
+            });
+        });
+    }
+
+    function deleteCarImagesFromDb(carId) {
+        return openImageDb().then(function(db) {
+            return new Promise(function(resolve, reject) {
+                let transaction = db.transaction(CAR_IMAGE_STORE_NAME, "readwrite");
+                let store = transaction.objectStore(CAR_IMAGE_STORE_NAME);
+
+                store.delete(carId);
+
+                transaction.oncomplete = function() {
+                    db.close();
+                    resolve();
+                };
+
+                transaction.onerror = function() {
+                    db.close();
+                    reject(transaction.error);
+                };
+            });
+        });
+    }
+
+    function isAuctionEnded(endAt) {
+        if (!endAt) {
+            return false;
+        }
+
+        let endDate = new Date(endAt);
+
+        if (Number.isNaN(endDate.getTime())) {
+            return false;
+        }
+
+        return endDate.getTime() <= Date.now();
+    }
+
+    function cleanupExpiredCars() {
+        let storedCars = getCars();
+        let expiredCarIds = [];
+        let activeCars = [];
+
+        for (let i = 0; i < storedCars.length; i++) {
+            if (isAuctionEnded(storedCars[i].auctionEndAt)) {
+                expiredCarIds.push(storedCars[i].id);
+            } else {
+                activeCars.push(storedCars[i]);
+            }
+        }
+
+        if (expiredCarIds.length === 0) {
+            return {
+                cars: storedCars,
+                removedSelectedCar: false
+            };
+        }
+
+        saveCars(activeCars);
+
+        for (let i = 0; i < expiredCarIds.length; i++) {
+            deleteCarImagesFromDb(expiredCarIds[i]).catch(function(error) {
+                console.error(error);
+            });
+        }
+
+        let removedSelectedCar = expiredCarIds.includes(localStorage.getItem("selectedCarId") || "");
+
+        if (removedSelectedCar) {
+            localStorage.removeItem("selectedCarId");
+        }
+
+        return {
+            cars: activeCars,
+            removedSelectedCar: removedSelectedCar
+        };
+    }
+
+    let selectedCarId = localStorage.getItem("selectedCarId");
+    let cleanupResult = cleanupExpiredCars();
+    let cars = cleanupResult.cars;
+
+    if (cleanupResult.removedSelectedCar) {
+        alert("Aukciono laikas baigesi, todel skelbimas buvo panaikintas.");
+        window.location.href = "index.html";
+    }
+
+    let currentCar = cars.find(function(car) {
+        return car.id === selectedCarId;
+    });
+
+    if (!currentCar) {
+        currentCar = cars[0];
+
+        if (!currentCar) {
+            window.location.href = "index.html";
+        }
+    }
+
+    let auctionCountdownTimer = null;
+
+    function formatAuctionEndAt(endAt) {
+        if (!endAt) {
+            return "Nenurodyta";
+        }
+
+        let date = new Date(endAt);
+
+        if (Number.isNaN(date.getTime())) {
+            return "Nenurodyta";
+        }
+
+        let day = String(date.getDate()).padStart(2, "0");
+        let month = String(date.getMonth() + 1).padStart(2, "0");
+        let year = date.getFullYear();
+        let hours = String(date.getHours()).padStart(2, "0");
+        let minutes = String(date.getMinutes()).padStart(2, "0");
+
+        return day + "." + month + "." + year + " " + hours + ":" + minutes;
+    }
+
+    function getAuctionCountdownText(endAt) {
+        if (!endAt) {
+            return "Aukciono pabaiga nenurodyta";
+        }
+
+        let endDate = new Date(endAt);
+
+        if (Number.isNaN(endDate.getTime())) {
+            return "Aukciono pabaiga nenurodyta";
+        }
+
+        let diff = endDate.getTime() - Date.now();
+
+        if (diff <= 0) {
+            return "Aukcionas baigesi";
+        }
+
+        let totalSeconds = Math.floor(diff / 1000);
+        let days = Math.floor(totalSeconds / 86400);
+        let hours = Math.floor((totalSeconds % 86400) / 3600);
+        let minutes = Math.floor((totalSeconds % 3600) / 60);
+        let seconds = totalSeconds % 60;
+
+        return "Liko: " + days + " d. " + String(hours).padStart(2, "0") + ":" + String(minutes).padStart(2, "0") + ":" + String(seconds).padStart(2, "0");
+    }
+
+    function getAuctionRemainingMs(endAt) {
+        if (!endAt) {
+            return Infinity;
+        }
+
+        let endDate = new Date(endAt);
+
+        if (Number.isNaN(endDate.getTime())) {
+            return Infinity;
+        }
+
+        return endDate.getTime() - Date.now();
+    }
+
+    function expireCurrentCarAndRedirect() {
+        let updatedCars = getCars().filter(function(car) {
+            return car.id !== currentCar.id;
+        });
+
+        saveCars(updatedCars);
+        localStorage.removeItem("selectedCarId");
+        deleteCarImagesFromDb(currentCar.id).catch(function(error) {
+            console.error(error);
+        });
+
+        if (auctionCountdownTimer) {
+            clearInterval(auctionCountdownTimer);
+        }
+
+        alert("Aukciono laikas baigesi, todel skelbimas buvo panaikintas.");
+        window.location.href = "index.html";
+    }
+
+    function renderAuctionStatus() {
+        let auctionStatus = document.getElementById("auctionStatus");
+        let bidButton = document.getElementById("bidButton");
+        let ended = isAuctionEnded(currentCar.auctionEndAt);
+        let countdownText = getAuctionCountdownText(currentCar.auctionEndAt);
+
+        if (ended) {
+            expireCurrentCarAndRedirect();
+            return;
+        }
+
+        auctionStatus.innerHTML =
+            '<div><strong>Aukciono pabaiga</strong> ' + formatAuctionEndAt(currentCar.auctionEndAt) + '</div>' +
+            '<div class="auction-countdown' + (ended ? ' auction-ended' : '') + '">' + countdownText + '</div>';
+
+        bidButton.disabled = ended;
+        bidButton.classList.toggle("bid-button-disabled", ended);
+    }
+
+    function startAuctionCountdown() {
+        if (auctionCountdownTimer) {
+            clearInterval(auctionCountdownTimer);
+        }
+
+        renderAuctionStatus();
+        auctionCountdownTimer = setInterval(renderAuctionStatus, 1000);
+    }
+
+    function extendAuctionIfNeeded() {
+        let remainingMs = getAuctionRemainingMs(currentCar.auctionEndAt);
+
+        if (remainingMs <= 0 || remainingMs >= AUCTION_EXTENSION_THRESHOLD_MS) {
+            return false;
+        }
+
+        let endDate = new Date(currentCar.auctionEndAt);
+        endDate = new Date(endDate.getTime() + AUCTION_EXTENSION_MS);
+        currentCar.auctionEndAt = endDate.toISOString();
+        return true;
+    }
+
+    let currentImageIndex = 0;
+    let currentImages = Array.isArray(currentCar.images) && currentCar.images.length > 0
+        ? currentCar.images
+        : (currentCar.image ? [currentCar.image] : []);
+
+    document.getElementById("carName").innerText = currentCar.title;
+    document.getElementById("price").innerText = currentCar.price;
+    let powerUnit = currentCar.powerUnit || "AG";
+
+    document.getElementById("carDetails").innerHTML =
+        '<div class="detail-item"><strong>Metai</strong>' + currentCar.year + '</div>' +
+        '<div class="detail-item"><strong>Galia</strong>' + currentCar.power + ' ' + powerUnit + '</div>' +
+        '<div class="detail-item"><strong>Kuras</strong>' + currentCar.fuel + '</div>' +
+        '<div class="detail-item"><strong>Greiciu deze</strong>' + currentCar.transmission + '</div>' +
+        '<div class="detail-item"><strong>Varomi ratai</strong>' + currentCar.drive + '</div>' +
+        '<div class="detail-item"><strong>Durys</strong>' + currentCar.doors + '</div>' +
+        '<div class="detail-item"><strong>Kebulas</strong>' + currentCar.bodyType + '</div>' +
+        '<div class="detail-item"><strong>Rida</strong>' + currentCar.mileage + ' km</div>' +
+        '<div class="detail-item"><strong>Spalva</strong>' + currentCar.color + '</div>' +
+        '<div class="detail-item"><strong>Telefonas</strong>' + (currentCar.sellerPhone || "-") + '</div>' +
+        '<div class="detail-item"><strong>Miestas</strong>' + (currentCar.sellerCity || "-") + '</div>';
+
+    if (currentCar.comment && currentCar.comment.trim() !== "") {
+        document.getElementById("carCommentBox").style.display = "block";
+        document.getElementById("carCommentBox").innerHTML =
+            "<strong>Komentaras apie automobili</strong>" + currentCar.comment;
+    }
+
+    startAuctionCountdown();
+
+    function renderGallery(images) {
+        let mainImage = document.getElementById("carImage");
+        let carGallery = document.getElementById("carGallery");
+        let prevImageBtn = document.getElementById("prevImageBtn");
+        let nextImageBtn = document.getElementById("nextImageBtn");
+        let lightboxPrevBtn = document.getElementById("lightboxPrevBtn");
+        let lightboxNextBtn = document.getElementById("lightboxNextBtn");
+
+        carGallery.innerHTML = "";
+
+        if (!images || images.length === 0) {
+            mainImage.removeAttribute("src");
+            mainImage.alt = "Nuotraukos nerasta";
+            prevImageBtn.disabled = true;
+            nextImageBtn.disabled = true;
+            lightboxPrevBtn.disabled = true;
+            lightboxNextBtn.disabled = true;
+            return;
+        }
+
+        if (currentImageIndex >= images.length) {
+            currentImageIndex = 0;
+        }
+
+        mainImage.src = images[currentImageIndex];
+        prevImageBtn.disabled = images.length <= 1;
+        nextImageBtn.disabled = images.length <= 1;
+        lightboxPrevBtn.disabled = images.length <= 1;
+        lightboxNextBtn.disabled = images.length <= 1;
+
+        for (let i = 0; i < images.length; i++) {
+            let thumb = document.createElement("div");
+            thumb.className = "gallery-thumb";
+
+            let galleryImage = document.createElement("img");
+            galleryImage.src = images[i];
+            galleryImage.alt = currentCar.title + " " + (i + 1);
+
+            thumb.onclick = function() {
+                currentImageIndex = i;
+                renderGallery(images);
+            };
+
+            thumb.appendChild(galleryImage);
+            carGallery.appendChild(thumb);
+        }
+    }
+
+    function changeImage(direction, keepLightboxOpen) {
+        if (!currentImages || currentImages.length <= 1) {
+            return;
+        }
+
+        currentImageIndex += direction;
+
+        if (currentImageIndex < 0) {
+            currentImageIndex = currentImages.length - 1;
+        }
+
+        if (currentImageIndex >= currentImages.length) {
+            currentImageIndex = 0;
+        }
+
+        renderGallery(currentImages);
+
+        if (keepLightboxOpen) {
+            document.getElementById("lightboxImage").src = currentImages[currentImageIndex];
+        }
+    }
+
+    function openLightbox() {
+        if (!currentImages || currentImages.length === 0) {
+            return;
+        }
+
+        document.getElementById("lightboxImage").src = currentImages[currentImageIndex];
+        document.getElementById("lightbox").classList.add("open");
+    }
+
+    function closeLightbox(event) {
+        if (event && event.target !== event.currentTarget && !event.target.classList.contains("lightbox-close")) {
+            return;
+        }
+
+        document.getElementById("lightbox").classList.remove("open");
+    }
+
+    renderGallery(currentImages);
+
+    if (currentImages.length === 0 && currentCar.imageCount > 0) {
+        getCarImagesFromDb(currentCar.id).then(function(images) {
+            currentImages = images;
+            renderGallery(currentImages);
+        }).catch(function(error) {
+            console.error(error);
+        });
+    }
+
+    function bid() {
+        let loggedIn = localStorage.getItem("loggedIn");
+
+        if (isAuctionEnded(currentCar.auctionEndAt)) {
+            alert("Aukcionas jau baigesi. Statyti nebegalima.");
+            renderAuctionStatus();
+            return;
+        }
+
+        if (loggedIn !== "true") {
+            alert("Norint statyti kaina reikia prisijungti.");
+            window.location.href = "login.html";
+            return;
+        }
+
+        let bidAmount = parseInt(document.getElementById("bidInput").value, 10);
+
+        if (!bidAmount || bidAmount <= 0) {
+            alert("Ivesk didesne nei 0 suma.");
+            return;
+        }
+
+        currentCar.price += bidAmount;
+        let auctionWasExtended = extendAuctionIfNeeded();
+        document.getElementById("price").innerText = currentCar.price;
+        renderAuctionStatus();
+
+        let updatedCars = cars.map(function(car) {
+            if (car.id === currentCar.id) {
+                return currentCar;
+            }
+
+            return car;
+        });
+
+        saveCars(updatedCars);
+        cars = updatedCars;
+
+        if (auctionWasExtended) {
+            alert("Kadangi iki aukciono pabaigos buvo like maziau nei 3 minutes, laikas pratestas dar 2 minutemis.");
+        }
+    }
+    </script>
+</body>
+</html>

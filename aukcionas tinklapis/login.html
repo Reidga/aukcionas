@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prisijungimas</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #111;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 24px;
+        }
+
+        .box {
+            width: 100%;
+            max-width: 420px;
+            background: #1c1c1c;
+            padding: 28px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        h1, h2 {
+            margin-top: 0;
+        }
+
+        input {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            margin: 10px 0;
+            padding: 12px;
+            border: 1px solid #333;
+            border-radius: 6px;
+            background: #101010;
+            color: white;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            background: orange;
+            color: black;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: #ffffff;
+            color: #111;
+            border: 1px solid #d8d8d8;
+        }
+
+        .social-facebook {
+            background: #1877f2;
+            color: #ffffff;
+            border-color: #1877f2;
+        }
+
+        .social-icon {
+            font-size: 20px;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 18px 0 12px;
+            color: #d4d4d4;
+            font-size: 14px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #333;
+        }
+
+        .helper-note {
+            margin: 8px 0 0;
+            color: #bcbcbc;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.72);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            box-sizing: border-box;
+            z-index: 1200;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            width: 100%;
+            max-width: 380px;
+            background: #1c1c1c;
+            border-radius: 8px;
+            padding: 24px;
+            box-sizing: border-box;
+            text-align: left;
+        }
+
+        .modal-box h3 {
+            margin: 0 0 10px;
+            text-align: center;
+        }
+
+        .modal-box p {
+            margin: 0 0 14px;
+            color: #d4d4d4;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        .secondary-btn {
+            background: transparent;
+            color: orange;
+            border: 1px solid orange;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .message {
+            min-height: 22px;
+            margin-top: 12px;
+            color: orange;
+            font-size: 14px;
+        }
+
+        .home-link {
+            position: fixed;
+            top: 18px;
+            left: 18px;
+            width: 46px;
+            height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: orange;
+            color: #111;
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+            z-index: 1100;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="home-link" aria-label="I pagrindini puslapi">⌂</a>
+    <div class="box">
+        <div id="loginBox">
+            <h1>Prisijungti</h1>
+            <button class="social-btn" onclick="continueWithProvider('google')">
+                <span class="social-icon">G</span>
+                <span>Testi su Google</span>
+            </button>
+            <button class="social-btn social-facebook" onclick="continueWithProvider('facebook')">
+                <span class="social-icon">f</span>
+                <span>Testi su Facebook</span>
+            </button>
+            <p class="helper-note">Jei paskyra dar nesukurta, ji bus sukurta automatiskai ir iskart prijungta.</p>
+            <div class="divider">arba rankiniu budu</div>
+            <input type="text" id="loginName" placeholder="Vardas">
+            <input type="password" id="loginPassword" placeholder="Slaptazodis">
+            <button onclick="login()">Prisijungti</button>
+            <button class="secondary-btn" onclick="showRegister()">Registruotis</button>
+        </div>
+
+        <div id="registerBox" class="hidden">
+            <h2>Registracija</h2>
+            <input type="text" id="registerName" placeholder="Vardas">
+            <input type="text" id="registerSurname" placeholder="Pavarde">
+            <input type="email" id="registerEmail" placeholder="El. pastas">
+            <input type="password" id="registerPassword" placeholder="Slaptazodis">
+            <input type="password" id="registerPasswordRepeat" placeholder="Pakartok slaptazodi">
+            <button onclick="register()">Prisiregistruoti</button>
+            <button class="secondary-btn" onclick="showLogin()">Atgal i prisijungima</button>
+        </div>
+
+        <p id="message" class="message"></p>
+    </div>
+
+    <div class="modal-overlay" id="socialModal">
+        <div class="modal-box">
+            <h3 id="socialModalTitle">Prisijungimas</h3>
+            <p id="socialModalText"></p>
+            <input type="text" id="socialName" placeholder="Vardas (nebūtina)">
+            <input type="email" id="socialEmail" placeholder="El. pastas">
+            <button onclick="confirmSocialLogin()">Testi</button>
+            <button class="secondary-btn" onclick="closeSocialModal()">Atsaukti</button>
+        </div>
+    </div>
+
+    <script>
+        const USERS_STORAGE_KEY = "auctionUsers";
+        let activeSocialProvider = "";
+
+        migrateLegacyUser();
+
+        function showRegister() {
+            document.getElementById("loginBox").classList.add("hidden");
+            document.getElementById("registerBox").classList.remove("hidden");
+            setMessage("");
+        }
+
+        function showLogin() {
+            document.getElementById("registerBox").classList.add("hidden");
+            document.getElementById("loginBox").classList.remove("hidden");
+            setMessage("");
+        }
+
+        function setMessage(text) {
+            document.getElementById("message").innerText = text;
+        }
+
+        function normalizeEmail(email) {
+            return email.trim().toLowerCase();
+        }
+
+        function getUsers() {
+            let users = JSON.parse(localStorage.getItem(USERS_STORAGE_KEY));
+
+            if (!Array.isArray(users)) {
+                return [];
+            }
+
+            return users;
+        }
+
+        function saveUsers(users) {
+            localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
+        }
+
+        function syncLegacyUserFields(user) {
+            if (!user) {
+                return;
+            }
+
+            localStorage.setItem("userName", user.name || "");
+            localStorage.setItem("userSurname", user.surname || "");
+            localStorage.setItem("userEmail", user.email || "");
+            localStorage.setItem("userPass", user.password || "");
+        }
+
+        function migrateLegacyUser() {
+            let users = getUsers();
+            let legacyName = localStorage.getItem("userName");
+            let legacyEmail = localStorage.getItem("userEmail");
+            let legacyPassword = localStorage.getItem("userPass");
+
+            if (!legacyName || !legacyEmail || !legacyPassword) {
+                return;
+            }
+
+            let normalizedEmail = normalizeEmail(legacyEmail);
+            let exists = users.some(function(user) {
+                return normalizeEmail(user.email || "") === normalizedEmail;
+            });
+
+            if (exists) {
+                return;
+            }
+
+            users.push({
+                id: "user-" + Date.now(),
+                name: legacyName,
+                surname: localStorage.getItem("userSurname") || "",
+                email: legacyEmail,
+                password: legacyPassword,
+                provider: "manual"
+            });
+
+            saveUsers(users);
+        }
+
+        function loginUser(user) {
+            localStorage.setItem("loggedIn", "true");
+            localStorage.setItem("currentUserName", user.name || "");
+            localStorage.setItem("currentUserEmail", user.email || "");
+            localStorage.setItem("currentAuthProvider", user.provider || "manual");
+            syncLegacyUserFields(user);
+            window.location.href = "index.html";
+        }
+
+        function buildNameFromEmail(email) {
+            let localPart = normalizeEmail(email).split("@")[0] || "Vartotojas";
+            let name = localPart.replace(/[._-]+/g, " ").trim();
+
+            if (!name) {
+                return "Vartotojas";
+            }
+
+            return name.charAt(0).toUpperCase() + name.slice(1);
+        }
+
+        function continueWithProvider(provider) {
+            let rememberedEmail = normalizeEmail(localStorage.getItem("lastSocialEmail-" + provider) || "");
+            let users = getUsers();
+            let rememberedUser = users.find(function(user) {
+                return user.provider === provider && normalizeEmail(user.email || "") === rememberedEmail;
+            });
+
+            if (rememberedUser) {
+                loginUser(rememberedUser);
+                return;
+            }
+
+            openSocialModal(provider);
+        }
+
+        function openSocialModal(provider) {
+            activeSocialProvider = provider;
+            document.getElementById("socialModal").classList.add("active");
+            document.getElementById("socialModalTitle").innerText = provider === "google" ? "Google prisijungimas" : "Facebook prisijungimas";
+            document.getElementById("socialModalText").innerText = provider === "google"
+                ? "Ivesk savo Gmail adresa. Jei paskyra jau buvo kurta siame puslapyje, prisijungsi iskart automatikai."
+                : "Ivesk savo el. pasta. Jei paskyra jau buvo kurta siame puslapyje, prisijungsi iskart automatikai.";
+            document.getElementById("socialEmail").value = "";
+            document.getElementById("socialName").value = "";
+            document.getElementById("socialEmail").placeholder = provider === "google" ? "vardas@gmail.com" : "vardas@example.com";
+            setMessage("");
+        }
+
+        function closeSocialModal() {
+            activeSocialProvider = "";
+            document.getElementById("socialModal").classList.remove("active");
+        }
+
+        function confirmSocialLogin() {
+            let email = normalizeEmail(document.getElementById("socialEmail").value);
+            let providedName = document.getElementById("socialName").value.trim();
+
+            if (!activeSocialProvider) {
+                return;
+            }
+
+            if (!email) {
+                setMessage("Ivesk el. pasta prisijungimui.");
+                return;
+            }
+
+            if (activeSocialProvider === "google" && !email.endsWith("@gmail.com")) {
+                setMessage("Google prisijungimui naudok Gmail adresa.");
+                return;
+            }
+
+            let users = getUsers();
+            let existingUser = users.find(function(user) {
+                return user.provider === activeSocialProvider && normalizeEmail(user.email || "") === email;
+            });
+
+            if (existingUser) {
+                localStorage.setItem("lastSocialEmail-" + activeSocialProvider, email);
+                closeSocialModal();
+                loginUser(existingUser);
+                return;
+            }
+
+            let newUser = {
+                id: "user-" + Date.now(),
+                name: providedName || buildNameFromEmail(email),
+                surname: "",
+                email: email,
+                password: "",
+                provider: activeSocialProvider
+            };
+
+            users.push(newUser);
+            saveUsers(users);
+            localStorage.setItem("lastSocialEmail-" + activeSocialProvider, email);
+            closeSocialModal();
+            loginUser(newUser);
+        }
+
+        function register() {
+            let name = document.getElementById("registerName").value.trim();
+            let surname = document.getElementById("registerSurname").value.trim();
+            let email = normalizeEmail(document.getElementById("registerEmail").value);
+            let password = document.getElementById("registerPassword").value;
+            let passwordRepeat = document.getElementById("registerPasswordRepeat").value;
+            let users = getUsers();
+
+            if (!name || !surname || !email || !password || !passwordRepeat) {
+                setMessage("Uzpildyk visus registracijos laukus.");
+                return;
+            }
+
+            if (password !== passwordRepeat) {
+                setMessage("Slaptazodziai nesutampa.");
+                return;
+            }
+
+            let existingUser = users.find(function(user) {
+                return normalizeEmail(user.email || "") === email;
+            });
+
+            if (existingUser) {
+                setMessage("Toks el. pastas jau uzregistruotas.");
+                return;
+            }
+
+            let newUser = {
+                id: "user-" + Date.now(),
+                name: name,
+                surname: surname,
+                email: email,
+                password: password,
+                provider: "manual"
+            };
+
+            users.push(newUser);
+            saveUsers(users);
+            syncLegacyUserFields(newUser);
+
+            localStorage.setItem("loggedIn", "false");
+            localStorage.removeItem("currentUserName");
+
+            document.getElementById("loginName").value = name;
+            document.getElementById("loginPassword").value = "";
+
+            document.getElementById("registerName").value = "";
+            document.getElementById("registerSurname").value = "";
+            document.getElementById("registerEmail").value = "";
+            document.getElementById("registerPassword").value = "";
+            document.getElementById("registerPasswordRepeat").value = "";
+
+            showLogin();
+            setMessage("Registracija sekminga. Dabar prisijunk su vardu ir slaptazodziu.");
+        }
+
+        function login() {
+            let name = document.getElementById("loginName").value.trim();
+            let password = document.getElementById("loginPassword").value;
+
+            let users = getUsers();
+
+            if (users.length === 0) {
+                setMessage("Pirma uzsiregistruok.");
+                return;
+            }
+
+            let matchedUser = users.find(function(user) {
+                return user.provider === "manual" && user.name === name && user.password === password;
+            });
+
+            if (!matchedUser) {
+                setMessage("Neteisingas vardas arba slaptazodis.");
+                return;
+            }
+
+            loginUser(matchedUser);
+        }
+    </script>
+</body>
+</html>
