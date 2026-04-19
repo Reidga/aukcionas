@@ -1,0 +1,1721 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ikelti automobili</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #111;
+            color: #f5f5f5;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            box-sizing: border-box;
+        }
+
+        .box {
+            width: 100%;
+            max-width: 560px;
+            background: #1b1b1b;
+            border-radius: 8px;
+            padding: 28px;
+            box-sizing: border-box;
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.28);
+        }
+
+        h1 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-top: 0;
+            color: #d4d4d4;
+            line-height: 1.5;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 18px;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #3b3b3b;
+            background: #101010;
+            color: #f5f5f5;
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: Arial, sans-serif;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .upload-trigger {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px 14px;
+            border-radius: 6px;
+            border: 1px solid #3b3b3b;
+            background: #101010;
+            cursor: pointer;
+        }
+
+        .upload-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 14px;
+            border-radius: 6px;
+            background: orange;
+            color: #111;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .upload-text {
+            color: #d4d4d4;
+            text-align: right;
+            word-break: break-word;
+        }
+
+        .preview-box {
+            margin: 16px 0 20px;
+            min-height: 220px;
+            border: 1px dashed #525252;
+            border-radius: 8px;
+            overflow: hidden;
+            color: #bcbcbc;
+            text-align: center;
+            padding: 12px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            width: 100%;
+        }
+
+        .preview-grid img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .file-list {
+            margin-top: 10px;
+            color: #d4d4d4;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .file-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-top: 6px;
+        }
+
+        .file-name {
+            text-align: left;
+            word-break: break-word;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 22px;
+        }
+
+        button {
+            flex: 1;
+            min-width: 160px;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            background: orange;
+            color: #111;
+        }
+
+        .secondary-btn {
+            background: transparent;
+            color: orange;
+            border: 1px solid orange;
+        }
+
+        .remove-file-btn {
+            padding: 6px 10px;
+            min-width: auto;
+            flex: 0 0 auto;
+            font-size: 13px;
+            background: transparent;
+            color: #ff6b6b;
+            border: 1px solid #ff6b6b;
+        }
+
+        .helper-text {
+            margin-top: 8px;
+            margin-bottom: 0;
+            color: #bcbcbc;
+            font-size: 14px;
+        }
+
+        .details-section {
+            display: none;
+            margin-top: 18px;
+        }
+
+        .optional-section {
+            margin-top: 24px;
+            padding-top: 8px;
+            border-top: 1px solid #2c2c2c;
+        }
+
+        .optional-note {
+            margin: 6px 0 14px;
+            color: #bcbcbc;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .country-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .feature-group {
+            margin-top: 18px;
+        }
+
+        .feature-group h3 {
+            margin: 0 0 12px;
+            font-size: 16px;
+            color: #ffffff;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px 18px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 0;
+            font-weight: normal;
+            color: #dcdcdc;
+        }
+
+        .feature-item input {
+            width: 16px;
+            min-width: 16px;
+            height: 16px;
+            margin-top: 2px;
+            padding: 0;
+        }
+
+        .feature-item span {
+            line-height: 1.4;
+        }
+
+        .auction-custom-fields {
+            display: none;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .auction-custom-fields.active {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .auction-time-hidden {
+            display: none;
+        }
+
+        .auction-date-input::-webkit-calendar-picker-indicator {
+            filter: invert(73%) sepia(84%) saturate(848%) hue-rotate(358deg) brightness(102%) contrast(103%);
+            opacity: 1;
+            cursor: pointer;
+        }
+
+        .auction-date-input::-webkit-datetime-edit,
+        .auction-date-input::-webkit-datetime-edit-text,
+        .auction-date-input::-webkit-datetime-edit-month-field,
+        .auction-date-input::-webkit-datetime-edit-day-field,
+        .auction-date-input::-webkit-datetime-edit-year-field {
+            color: #f5f5f5;
+        }
+
+        .time-select-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .time-select-wrap select {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .time-separator {
+            color: orange;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 640px) {
+            .country-grid,
+            .feature-grid,
+            .auction-custom-fields.active {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .field-error {
+            color: #ff4d4f;
+            font-size: 18px;
+            line-height: 1;
+            display: none;
+        }
+
+        .input-error {
+            border-color: #ff4d4f;
+            box-shadow: 0 0 0 1px rgba(255, 77, 79, 0.25);
+        }
+
+        .home-link {
+            position: fixed;
+            top: 18px;
+            left: 18px;
+            width: 46px;
+            height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: orange;
+            color: #111;
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+            z-index: 1100;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="home-link" aria-label="I pagrindini puslapi">⌂</a>
+    <div class="box">
+        <h1 id="pageTitle">Ikelk savo automobili</h1>
+        <p id="pageDescription">Uzpildyk duomenis, ikelk nuotraukas ir automobilis atsiras pagrindiniame puslapyje.</p>
+
+        <label for="carBrand">Automobilio marke <span id="error-carBrand" class="field-error">!</span></label>
+        <select id="carBrand" onchange="updateModelOptions(); clearFieldError('carBrand')">
+            <option value="">Pasirink automobilio marke</option>
+            <option>Abarth</option>
+            <option>Alfa Romeo</option>
+            <option>Aston Martin</option>
+            <option>Audi</option>
+            <option>Bentley</option>
+            <option>BMW</option>
+            <option>Bugatti</option>
+            <option>Buick</option>
+            <option>Cadillac</option>
+            <option>Chevrolet</option>
+            <option>Chrysler</option>
+            <option>Citroen</option>
+            <option>Cupra</option>
+            <option>Dacia</option>
+            <option>Daewoo</option>
+            <option>Daihatsu</option>
+            <option>Dodge</option>
+            <option>DS Automobiles</option>
+            <option>Ferrari</option>
+            <option>Fiat</option>
+            <option>Ford</option>
+            <option>Genesis</option>
+            <option>GMC</option>
+            <option>Honda</option>
+            <option>Hummer</option>
+            <option>Hyundai</option>
+            <option>Infiniti</option>
+            <option>Isuzu</option>
+            <option>Jaguar</option>
+            <option>Jeep</option>
+            <option>Kia</option>
+            <option>Lada</option>
+            <option>Lamborghini</option>
+            <option>Lancia</option>
+            <option>Land Rover</option>
+            <option>Lexus</option>
+            <option>Lincoln</option>
+            <option>Lotus</option>
+            <option>Maserati</option>
+            <option>Maybach</option>
+            <option>Mazda</option>
+            <option>McLaren</option>
+            <option>Mercedes-Benz</option>
+            <option>Mini</option>
+            <option>Mitsubishi</option>
+            <option>Nissan</option>
+            <option>Opel</option>
+            <option>Peugeot</option>
+            <option>Plymouth</option>
+            <option>Polestar</option>
+            <option>Pontiac</option>
+            <option>Porsche</option>
+            <option>RAM</option>
+            <option>Renault</option>
+            <option>Rolls-Royce</option>
+            <option>Rover</option>
+            <option>Saab</option>
+            <option>Seat</option>
+            <option>Skoda</option>
+            <option>Smart</option>
+            <option>Subaru</option>
+            <option>Suzuki</option>
+            <option>Tesla</option>
+            <option>Toyota</option>
+            <option>Volkswagen</option>
+            <option>Volvo</option>
+        </select>
+
+        <div id="modelSection" style="display: none;">
+            <label for="carModel">Automobilio modelis <span id="error-carModel" class="field-error">!</span></label>
+            <select id="carModel" onchange="toggleDetailsSection(); clearFieldError('carModel')">
+                <option value="">Pirma pasirink automobilio marke</option>
+            </select>
+            <p class="helper-text">Modeliai rodomi pagal pasirinkta marke.</p>
+        </div>
+
+        <div id="detailsSection" class="details-section">
+            <label for="carYear">Pagaminimo metai <span id="error-carYear" class="field-error">!</span></label>
+            <select id="carYear" onchange="clearFieldError('carYear'); updateGenerationOptions()">
+                <option value="">Pasirink metus</option>
+            </select>
+
+            <label for="carGeneration">Tikslesnis modelis / karta <span id="error-carGeneration" class="field-error">!</span></label>
+                <select id="carGeneration" onchange="handleGenerationChange(); clearFieldError('carGeneration')">
+                    <option value="">Pasirink modelio karta</option>
+                </select>
+                <input type="text" id="carGenerationCustom" placeholder="Irasyk tikslu modelio varianta" oninput="clearFieldError('carGeneration')" style="display: none; margin-top: 10px;">
+                <p class="helper-text">Variantai atnaujinami pagal marke, modeli ir metus. Jei tinkamo varianto nera, pasirink "Kita" ir irasyk ranka.</p>
+
+            <label for="carPower">Galia <span id="error-carPower" class="field-error">!</span></label>
+            <div class="auction-custom-fields active" style="margin-top: 0;">
+                <input type="number" id="carPower" placeholder="Pvz. 110" oninput="clearFieldError('carPower')">
+                <select id="carPowerUnit">
+                    <option value="AG">AG</option>
+                    <option value="kW">kW</option>
+                </select>
+            </div>
+
+            <label for="carFuel">Kuro tipas <span id="error-carFuel" class="field-error">!</span></label>
+            <select id="carFuel" onchange="clearFieldError('carFuel')">
+                <option value="">Pasirink kuro tipa</option>
+                <option>Benzinas</option>
+                <option>Dyzelis</option>
+                <option>Benzinas / dujos</option>
+                <option>Hibridas</option>
+                <option>Plug-in hibridas</option>
+                <option>Elektra</option>
+                <option>Vandenilis</option>
+            </select>
+
+            <label for="carTransmission">Greiciu deze <span id="error-carTransmission" class="field-error">!</span></label>
+            <select id="carTransmission" onchange="clearFieldError('carTransmission')">
+                <option value="">Pasirink greiciu deze</option>
+                <option>Mechanine</option>
+                <option>Automatine</option>
+                <option>Pusiau automatine</option>
+            </select>
+
+            <label for="carDrive">Varomi ratai <span id="error-carDrive" class="field-error">!</span></label>
+            <select id="carDrive" onchange="clearFieldError('carDrive')">
+                <option value="">Pasirink varomu ratu tipa</option>
+                <option>Priekiniai</option>
+                <option>Galiniai</option>
+                <option>Visi varomi</option>
+            </select>
+
+            <label for="carSteeringWheel">Vairo padetis <span id="error-carSteeringWheel" class="field-error">!</span></label>
+            <select id="carSteeringWheel" onchange="clearFieldError('carSteeringWheel')">
+                <option value="">Pasirink vairo padeti</option>
+                <option>Kaire</option>
+                <option>Desine</option>
+            </select>
+
+            <label for="carDoors">Duru skaicius <span id="error-carDoors" class="field-error">!</span></label>
+            <select id="carDoors" onchange="clearFieldError('carDoors')">
+                <option value="">Pasirink duru skaiciu</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
+
+            <label for="carBodyType">Kebulo tipas <span id="error-carBodyType" class="field-error">!</span></label>
+            <select id="carBodyType" onchange="clearFieldError('carBodyType')">
+                <option value="">Pasirink kebulo tipa</option>
+                <option>Sedanas</option>
+                <option>Universalas</option>
+                <option>Hecbekas</option>
+                <option>Kupe</option>
+                <option>Kabrioletas</option>
+                <option>Visureigis</option>
+                <option>Krosoveris</option>
+                <option>Vienaturis</option>
+                <option>Pickup</option>
+                <option>Mikroautobusas</option>
+            </select>
+
+            <label for="carMileage">Rida (km) <span id="error-carMileage" class="field-error">!</span></label>
+            <input type="number" id="carMileage" placeholder="Pvz. 185000" oninput="clearFieldError('carMileage')">
+
+            <label for="carColor">Spalva <span id="error-carColor" class="field-error">!</span></label>
+            <input type="text" id="carColor" placeholder="Pvz. Juoda" oninput="clearFieldError('carColor')">
+
+            <label for="carPrice">Pradine kaina (EUR) <span id="error-carPrice" class="field-error">!</span></label>
+            <input type="number" id="carPrice" placeholder="Pvz. 4500" oninput="clearFieldError('carPrice')">
+
+            <label for="sellerPhone">Telefono numeris <span id="error-sellerPhone" class="field-error">!</span></label>
+            <input type="text" id="sellerPhone" placeholder="Pvz. +37060012345" oninput="clearFieldError('sellerPhone')">
+
+            <label for="sellerCity">Miestas <span id="error-sellerCity" class="field-error">!</span></label>
+            <input type="text" id="sellerCity" placeholder="Pvz. Vilnius" oninput="clearFieldError('sellerCity')">
+
+            <div class="optional-section">
+                <label>Papildoma informacija</label>
+                <p class="optional-note">Si dalis neprivaloma. Gali pazymeti tik tai, kas tinka tavo automobiliui, arba visai praleisti.</p>
+
+                <div class="country-grid">
+                    <div>
+                        <label for="originCountry">Kilmes salis</label>
+                        <select id="originCountry">
+                            <option value="">Pasirinkite</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="registrationCountry">Registracijos salis</label>
+                        <select id="registrationCountry">
+                            <option value="">Pasirinkite</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="optionalFeatures"></div>
+            </div>
+
+            <label for="carComment">Komentaras apie automobili</label>
+            <textarea id="carComment" placeholder="Cia gali parasyti apie gedimus, pakeistas dalis, bukle, privalumus ar kitus svarbius dalykus."></textarea>
+
+            <label for="auctionDuration">Aukciono trukme <span id="error-auctionDuration" class="field-error">!</span></label>
+            <select id="auctionDuration" onchange="handleAuctionDurationChange(); clearFieldError('auctionDuration')" required>
+                <option value="">Pasirink aukciono trukme</option>
+                <option value="1">1 diena</option>
+                <option value="3">3 dienos</option>
+                <option value="5">5 dienos</option>
+                <option value="7">7 dienos</option>
+                <option value="custom">Pasirinkti tikslia data ir laika</option>
+            </select>
+            <div id="auctionCustomFields" class="auction-custom-fields">
+                <input type="date" id="auctionEndDate" class="auction-date-input" onchange="handleAuctionDateChange(); clearFieldError('auctionDuration')" aria-label="Aukciono pabaigos data">
+                <div id="auctionTimeWrap" class="time-select-wrap auction-time-hidden" aria-label="Aukciono pabaigos laikas">
+                    <select id="auctionEndHour" onchange="clearFieldError('auctionDuration')" aria-label="Aukciono pabaigos valanda">
+                        <option value="">Val.</option>
+                    </select>
+                    <span class="time-separator">:</span>
+                    <select id="auctionEndMinute" onchange="clearFieldError('auctionDuration')" aria-label="Aukciono pabaigos minutes">
+                        <option value="">Min.</option>
+                    </select>
+                </div>
+            </div>
+            <p class="helper-text">Jei renkiesi tikslia pabaiga, pirma pasirink diena kalendoriuje, tada galesi nustatyti laika.</p>
+        </div>
+
+        <label for="carPhotoInput">Automobilio nuotraukos <span id="error-carPhotoInput" class="field-error">!</span></label>
+        <label class="upload-trigger" for="carPhotoInput">
+            <span class="upload-button">Prideti nuotraukas</span>
+            <span class="upload-text" id="uploadText">Gali prideti daugiau nei viena nuotrauka</span>
+        </label>
+        <input type="file" id="carPhotoInput" accept="image/*" multiple onchange="handlePhotoSelection(event)">
+        <div id="fileList" class="file-list"></div>
+
+        <div id="previewBox" class="preview-box">
+            Nuotrauku perziura atsiras cia
+        </div>
+
+        <div class="actions">
+            <button id="saveButton" onclick="saveUploadedPhoto()">Skelbti i aukciona</button>
+            <button class="secondary-btn" onclick="window.location.href='index.html'">Grizti atgal</button>
+        </div>
+    </div>
+
+    <script>
+        const CAR_IMAGE_DB_NAME = "auctionCarImages";
+        const CAR_IMAGE_STORE_NAME = "carImages";
+        const countryOptions = [
+            "Lietuva", "Latvija", "Estija", "Lenkija", "Vokietija", "Prancuzija",
+            "Italija", "Ispanija", "Nyderlandai", "Belgija", "Svedija", "Norvegija",
+            "Danija", "Suomija", "Jungtine Karalyste", "JAV", "Kanada", "Japonija"
+        ];
+        const optionalFeatureGroups = [
+            {
+                title: "Salonas",
+                items: ["Odinis salonas", "Sildomos sedynes", "Ventiliuojamos sedynes", "Panoraminis stogas", "El. valdomos sedynes", "Sportines sedynes"]
+            },
+            {
+                title: "Elektronika",
+                items: ["Navigacija / GPS", "Autopilotas", "Beraktis uzvedimas", "Krituliu jutiklis", "Projektorius ant stiklo", "360 vaizdo kamera"]
+            },
+            {
+                title: "Saugumas",
+                items: ["Aklosios zonos stebejimas", "Juostos palaikymo sistema", "Parkavimo sensoriai", "Automatinis stabdymas", "Tolimuju sviesu asistentas", "ISOFIX"]
+            },
+            {
+                title: "Audio / video",
+                items: ["Apple CarPlay", "Android Auto", "USB jungtis", "Bluetooth", "Laisvu ranku iranga", "CD grotuvas"]
+            },
+            {
+                title: "Eksterjeras",
+                items: ["LED zibintai", "Ruko zibintai", "Stogo bagazines laikikliai", "Lengvojo lydinio ratlankiai", "Kablys", "Tamsinti stiklai"]
+            },
+            {
+                title: "Kiti ypatumai",
+                items: ["Parduodama lizingu", "Galioja garantija", "Neeksploatuota Lietuvoje", "Serviso knygele", "Keli raktu komplektai", "Automobilis is Amerikos"]
+            }
+        ];
+        const generationSuggestions = {
+            "Audi|A6": [
+                { label: "4A/C4 (1994 - 1997)", from: 1994, to: 1997 },
+                { label: "4B/C5 (1997 - 2001)", from: 1997, to: 2001 },
+                { label: "4B/C5 [restyling] (2001 - 2004)", from: 2001, to: 2004 },
+                { label: "4F/C6 (2004 - 2008)", from: 2004, to: 2008 },
+                { label: "4F/C6 [restyling] (2008 - 2011)", from: 2008, to: 2011 },
+                { label: "4G/C7 (2011 - 2014)", from: 2011, to: 2014 },
+                { label: "4G/C7 [restyling] (2014 - 2018)", from: 2014, to: 2018 },
+                { label: "C8 (2018 - dabar)", from: 2018, to: 2035 }
+            ],
+            "Audi|A4": [
+                { label: "B5 (1994 - 1999)", from: 1994, to: 1999 },
+                { label: "B6 (2000 - 2004)", from: 2000, to: 2004 },
+                { label: "B7 (2004 - 2008)", from: 2004, to: 2008 },
+                { label: "B8 (2008 - 2011)", from: 2008, to: 2011 },
+                { label: "B8 [restyling] (2011 - 2015)", from: 2011, to: 2015 },
+                { label: "B9 (2015 - 2019)", from: 2015, to: 2019 },
+                { label: "B9 [restyling] (2019 - dabar)", from: 2019, to: 2035 }
+            ],
+            "Audi|A3": [
+                { label: "8L (1996 - 2003)", from: 1996, to: 2003 },
+                { label: "8P (2003 - 2008)", from: 2003, to: 2008 },
+                { label: "8P [restyling] (2008 - 2012)", from: 2008, to: 2012 },
+                { label: "8V (2012 - 2016)", from: 2012, to: 2016 },
+                { label: "8V [restyling] (2016 - 2020)", from: 2016, to: 2020 },
+                { label: "8Y (2020 - dabar)", from: 2020, to: 2035 }
+            ],
+            "BMW|3 Series": [
+                { label: "E36 (1990 - 2000)", from: 1990, to: 2000 },
+                { label: "E46 (1998 - 2005)", from: 1998, to: 2005 },
+                { label: "E90/E91/E92/E93 (2005 - 2012)", from: 2005, to: 2012 },
+                { label: "F30/F31/F34 (2012 - 2015)", from: 2012, to: 2015 },
+                { label: "F30/F31/F34 [restyling] (2015 - 2019)", from: 2015, to: 2019 },
+                { label: "G20/G21 (2019 - dabar)", from: 2019, to: 2035 }
+            ],
+            "BMW|5 Series": [
+                { label: "E39 (1995 - 2003)", from: 1995, to: 2003 },
+                { label: "E60/E61 (2003 - 2010)", from: 2003, to: 2010 },
+                { label: "F10/F11 (2010 - 2017)", from: 2010, to: 2017 },
+                { label: "G30/G31 (2017 - 2023)", from: 2017, to: 2023 },
+                { label: "G60/G61 (2023 - dabar)", from: 2023, to: 2035 }
+            ],
+            "Mercedes-Benz|C-Class": [
+                { label: "W202 (1993 - 2000)", from: 1993, to: 2000 },
+                { label: "W203 (2000 - 2007)", from: 2000, to: 2007 },
+                { label: "W204 (2007 - 2014)", from: 2007, to: 2014 },
+                { label: "W205 (2014 - 2021)", from: 2014, to: 2021 },
+                { label: "W206 (2021 - dabar)", from: 2021, to: 2035 }
+            ],
+            "Mercedes-Benz|E-Class": [
+                { label: "W210 (1995 - 2002)", from: 1995, to: 2002 },
+                { label: "W211 (2002 - 2009)", from: 2002, to: 2009 },
+                { label: "W212 (2009 - 2016)", from: 2009, to: 2016 },
+                { label: "W213 (2016 - 2023)", from: 2016, to: 2023 },
+                { label: "W214 (2023 - dabar)", from: 2023, to: 2035 }
+            ],
+            "Volkswagen|Golf": [
+                { label: "Golf IV (1997 - 2003)", from: 1997, to: 2003 },
+                { label: "Golf V (2003 - 2008)", from: 2003, to: 2008 },
+                { label: "Golf VI (2008 - 2012)", from: 2008, to: 2012 },
+                { label: "Golf VII (2012 - 2017)", from: 2012, to: 2017 },
+                { label: "Golf VII [restyling] (2017 - 2020)", from: 2017, to: 2020 },
+                { label: "Golf VIII (2020 - dabar)", from: 2020, to: 2035 }
+            ],
+            "Volkswagen|Passat": [
+                { label: "B5 (1996 - 2000)", from: 1996, to: 2000 },
+                { label: "B5.5 (2000 - 2005)", from: 2000, to: 2005 },
+                { label: "B6 (2005 - 2010)", from: 2005, to: 2010 },
+                { label: "B7 (2010 - 2014)", from: 2010, to: 2014 },
+                { label: "B8 (2014 - 2019)", from: 2014, to: 2019 },
+                { label: "B8 [restyling] (2019 - dabar)", from: 2019, to: 2035 }
+            ],
+            "Skoda|Octavia": [
+                { label: "1U (1996 - 2004)", from: 1996, to: 2004 },
+                { label: "1Z (2004 - 2013)", from: 2004, to: 2013 },
+                { label: "5E (2013 - 2020)", from: 2013, to: 2020 },
+                { label: "NX (2020 - dabar)", from: 2020, to: 2035 }
+            ],
+            "Toyota|Corolla": [
+                { label: "E110 (1995 - 2000)", from: 1995, to: 2000 },
+                { label: "E120/E130 (2000 - 2007)", from: 2000, to: 2007 },
+                { label: "E140/E150 (2006 - 2013)", from: 2006, to: 2013 },
+                { label: "E170 (2013 - 2019)", from: 2013, to: 2019 },
+                { label: "E210 (2018 - dabar)", from: 2018, to: 2035 }
+            ]
+        };
+
+        const defaultCars = [
+            {
+                id: "default-bmw-320",
+                brand: "BMW",
+                model: "320",
+                title: "BMW 320",
+                year: "2018",
+                power: "184",
+                fuel: "Dyzelis",
+                transmission: "Automatine",
+                drive: "Galiniai",
+                doors: "4",
+                bodyType: "Sedanas",
+                mileage: "165000",
+                color: "Melyna",
+                price: 1500,
+                image: "https://images.unsplash.com/photo-1502877338535-766e1452684a",
+                images: ["https://images.unsplash.com/photo-1502877338535-766e1452684a"]
+            },
+            {
+                id: "default-audi-a6",
+                brand: "Audi",
+                model: "A6",
+                title: "Audi A6",
+                year: "2017",
+                power: "190",
+                fuel: "Dyzelis",
+                transmission: "Automatine",
+                drive: "Priekiniai",
+                doors: "4",
+                bodyType: "Sedanas",
+                mileage: "189000",
+                color: "Juoda",
+                price: 2200,
+                image: "https://images.unsplash.com/photo-1493238792000-8113da705763",
+                images: ["https://images.unsplash.com/photo-1493238792000-8113da705763"]
+            },
+            {
+                id: "default-mercedes-e200",
+                brand: "Mercedes-Benz",
+                model: "E200",
+                title: "Mercedes E200",
+                year: "2019",
+                power: "197",
+                fuel: "Benzinas",
+                transmission: "Automatine",
+                drive: "Galiniai",
+                doors: "4",
+                bodyType: "Sedanas",
+                mileage: "98000",
+                color: "Geltona",
+                price: 3000,
+                image: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c",
+                images: ["https://images.unsplash.com/photo-1511919884226-fd3cad34687c"]
+            }
+        ];
+
+        const brandModels = {
+            "Abarth": ["124 Spider", "500", "500e", "595", "695", "Grande Punto"],
+            "Alfa Romeo": ["145", "146", "147", "156", "159", "Brera", "Giulia", "Giulietta", "GT", "Mito", "Spider", "Stelvio", "Tonale"],
+            "Aston Martin": ["Cygnet", "DB11", "DB12", "DB7", "DB9", "DBS", "Rapide", "V8 Vantage", "V12 Vantage", "Vanquish", "Vantage", "Virage"],
+            "Audi": ["80", "100", "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "Allroad", "e-tron", "Q2", "Q3", "Q5", "Q7", "Q8", "R8", "RS3", "RS4", "RS6", "S3", "S4", "S6", "TT"],
+            "Bentley": ["Arnage", "Bentayga", "Brooklands", "Continental", "Flying Spur", "Mulsanne", "Turbo R"],
+            "BMW": ["1 Series", "2 Series", "3 Series", "4 Series", "5 Series", "6 Series", "7 Series", "8 Series", "i3", "i4", "i5", "i7", "i8", "X1", "X3", "X4", "X5", "X6", "X7", "Z3", "Z4"],
+            "Bugatti": ["Chiron", "Divo", "EB110", "Veyron"],
+            "Buick": ["Enclave", "Encore", "Envista", "LaCrosse", "LeSabre", "Lucerne", "Regal", "Riviera"],
+            "Cadillac": ["ATS", "BLS", "CT4", "CT5", "CTS", "DeVille", "DTS", "Escalade", "Seville", "SRX", "XT4", "XT5", "XT6"],
+            "Chevrolet": ["Aveo", "Blazer", "Camaro", "Captiva", "Corvette", "Cruze", "Equinox", "Impala", "Malibu", "Orlando", "Silverado", "Spark", "Suburban", "Tahoe", "TrailBlazer"],
+            "Chrysler": ["200", "300", "300C", "Crossfire", "Grand Voyager", "Pacifica", "PT Cruiser", "Sebring", "Town & Country", "Voyager"],
+            "Citroen": ["Berlingo", "C1", "C2", "C3", "C4", "C5", "C6", "C8", "DS3", "DS4", "DS5", "Jumpy", "Nemo", "Saxo", "Xsara"],
+            "Cupra": ["Ateca", "Born", "Formentor", "Leon", "Tavascan"],
+            "Dacia": ["Dokker", "Duster", "Jogger", "Lodgy", "Logan", "Sandero", "Spring"],
+            "Daewoo": ["Espero", "Kalos", "Lacetti", "Lanos", "Leganza", "Matiz", "Nubira"],
+            "Daihatsu": ["Applause", "Charade", "Copen", "Cuore", "Feroza", "Sirion", "Terios", "YRV"],
+            "Dodge": ["Avenger", "Caliber", "Challenger", "Charger", "Dakota", "Durango", "Journey", "Magnum", "Nitro", "RAM", "Viper"],
+            "DS Automobiles": ["DS 3", "DS 4", "DS 5", "DS 7", "DS 9"],
+            "Ferrari": ["296 GTB", "360", "458 Italia", "488 GTB", "512 TR", "812 Superfast", "California", "F355", "F430", "F8 Tributo", "Portofino", "Roma"],
+            "Fiat": ["124", "500", "500L", "500X", "Bravo", "Brava", "Croma", "Doblo", "Ducato", "Grande Punto", "Linea", "Panda", "Punto", "Stilo", "Tipo"],
+            "Ford": ["B-Max", "C-Max", "Edge", "Escort", "Explorer", "Fiesta", "Focus", "Fusion", "Galaxy", "Kuga", "Mondeo", "Mustang", "Puma", "Ranger", "S-Max", "Tourneo", "Transit"],
+            "Genesis": ["G70", "G80", "G90", "GV60", "GV70", "GV80"],
+            "GMC": ["Acadia", "Canyon", "Envoy", "Savana", "Sierra", "Terrain", "Yukon"],
+            "Honda": ["Accord", "Civic", "CR-V", "CR-Z", "e", "FR-V", "HR-V", "Insight", "Jazz", "Legend", "Prelude", "S2000", "Stream"],
+            "Hummer": ["H1", "H2", "H3", "EV Pickup", "EV SUV"],
+            "Hyundai": ["Accent", "Coupe", "Elantra", "Genesis", "Getz", "i10", "i20", "i30", "i40", "Ioniq", "Kona", "Santa Fe", "Sonata", "Tucson", "Veloster"],
+            "Infiniti": ["EX", "FX", "G", "M", "Q30", "Q50", "Q60", "Q70", "QX30", "QX50", "QX60", "QX70", "QX80"],
+            "Isuzu": ["D-Max", "MU-X", "Rodeo", "Trooper"],
+            "Jaguar": ["E-Pace", "F-Pace", "F-Type", "I-Pace", "S-Type", "XE", "XF", "XJ", "XK"],
+            "Jeep": ["Cherokee", "Commander", "Compass", "Gladiator", "Grand Cherokee", "Liberty", "Patriot", "Renegade", "Wrangler"],
+            "Kia": ["Carens", "Carnival", "Ceed", "Cerato", "EV6", "Magentis", "Niro", "Optima", "Picanto", "Rio", "Sorento", "Soul", "Sportage", "Stinger"],
+            "Lada": ["2101", "2107", "Granta", "Kalina", "Niva", "Priora", "Samara", "Vesta"],
+            "Lamborghini": ["Aventador", "Diablo", "Gallardo", "Huracan", "Murcielago", "Urus"],
+            "Lancia": ["Dedra", "Delta", "Kappa", "Lybra", "Musa", "Phedra", "Thema", "Ypsilon"],
+            "Land Rover": ["Defender", "Discovery", "Discovery Sport", "Freelander", "Range Rover", "Range Rover Evoque", "Range Rover Sport", "Range Rover Velar"],
+            "Lexus": ["CT", "ES", "GS", "GX", "IS", "LC", "LS", "LX", "NX", "RC", "RX", "SC", "UX"],
+            "Lincoln": ["Aviator", "Continental", "Corsair", "MKC", "MKS", "MKT", "MKX", "MKZ", "Navigator", "Town Car"],
+            "Lotus": ["Elan", "Elise", "Emira", "Esprit", "Evija", "Evora", "Exige"],
+            "Maserati": ["3200 GT", "Ghibli", "GranCabrio", "GranTurismo", "Grecale", "Levante", "MC20", "Quattroporte"],
+            "Maybach": ["57", "62", "GLS", "S-Class"],
+            "Mazda": ["2", "3", "5", "6", "323", "626", "CX-3", "CX-30", "CX-5", "CX-7", "CX-9", "MX-5", "Premacy", "RX-8"],
+            "McLaren": ["540C", "570S", "600LT", "650S", "720S", "750S", "Artura", "GT", "P1"],
+            "Mercedes-Benz": ["190", "A-Class", "B-Class", "C-Class", "CLA", "CLK", "CLS", "E-Class", "G-Class", "GLA", "GLB", "GLC", "GLE", "GLS", "ML", "S-Class", "SL", "SLK", "Sprinter", "V-Class"],
+            "Mini": ["Clubman", "Convertible", "Countryman", "Coupe", "Hatch", "Paceman", "Roadster"],
+            "Mitsubishi": ["ASX", "Carisma", "Colt", "Eclipse Cross", "Galant", "Grandis", "L200", "Lancer", "Outlander", "Pajero", "Space Star"],
+            "Nissan": ["350Z", "370Z", "Almera", "Cube", "GT-R", "Juke", "Leaf", "Micra", "Murano", "Navara", "Note", "Pathfinder", "Patrol", "Primera", "Qashqai", "Terrano", "X-Trail"],
+            "Opel": ["Adam", "Astra", "Calibra", "Combo", "Corsa", "Crossland", "Frontera", "Grandland", "Insignia", "Meriva", "Mokka", "Omega", "Signum", "Vectra", "Vivaro", "Zafira"],
+            "Peugeot": ["106", "107", "108", "206", "207", "208", "3008", "307", "308", "406", "407", "408", "5008", "508", "Boxer", "Expert", "Partner", "RCZ"],
+            "Plymouth": ["Breeze", "Grand Voyager", "Neon", "Prowler", "Voyager"],
+            "Polestar": ["1", "2", "3", "4"],
+            "Pontiac": ["Aztek", "Bonneville", "Firebird", "G6", "Grand Am", "Grand Prix", "Solstice"],
+            "Porsche": ["718 Boxster", "718 Cayman", "911", "924", "928", "944", "968", "Cayenne", "Macan", "Panamera", "Taycan"],
+            "RAM": ["1500", "2500", "3500", "ProMaster"],
+            "Renault": ["Captur", "Clio", "Espace", "Fluence", "Grand Scenic", "Kadjar", "Kangoo", "Koleos", "Laguna", "Megane", "Modus", "Scenic", "Symbol", "Talisman", "Trafic", "Twingo", "Zoe"],
+            "Rolls-Royce": ["Cullinan", "Dawn", "Ghost", "Phantom", "Silver Shadow", "Spectre", "Wraith"],
+            "Rover": ["25", "45", "75", "200", "400", "600", "800", "Mini"],
+            "Saab": ["9-3", "9-5", "900", "9000", "9-7X"],
+            "Seat": ["Alhambra", "Altea", "Arona", "Arosa", "Ateca", "Cordoba", "Exeo", "Ibiza", "Leon", "Mii", "Toledo"],
+            "Skoda": ["Citigo", "Fabia", "Favorit", "Felicia", "Kamiq", "Karoq", "Kodiaq", "Octavia", "Rapid", "Roomster", "Suberb", "Superb", "Yeti"],
+            "Smart": ["#1", "#3", "ForFour", "ForTwo", "Roadster"],
+            "Subaru": ["BRZ", "Forester", "Impreza", "Justy", "Legacy", "Levorg", "Outback", "Tribeca", "WRX", "XV"],
+            "Suzuki": ["Alto", "Baleno", "Grand Vitara", "Ignis", "Jimny", "Kizashi", "Liana", "SX4", "Swift", "Vitara", "Wagon R"],
+            "Tesla": ["Model 3", "Model S", "Model X", "Model Y", "Roadster", "Cybertruck"],
+            "Toyota": ["Auris", "Avensis", "Aygo", "C-HR", "Camry", "Celica", "Corolla", "GT86", "Highlander", "Hilux", "Land Cruiser", "Prius", "RAV4", "Supra", "Verso", "Yaris"],
+            "Volkswagen": ["Amarok", "Arteon", "Beetle", "Bora", "Caddy", "Crafter", "EOS", "Fox", "Golf", "ID.3", "ID.4", "Jetta", "Passat", "Phaeton", "Polo", "Scirocco", "Sharan", "T-Cross", "T-Roc", "Tiguan", "Touareg", "Touran", "Up"],
+            "Volvo": ["240", "440", "740", "850", "C30", "C70", "S40", "S60", "S80", "S90", "V40", "V50", "V60", "V70", "V90", "XC40", "XC60", "XC70", "XC90"]
+        };
+
+        const requiredFields = [
+            "carBrand",
+            "carModel",
+            "carYear",
+            "carGeneration",
+            "carPower",
+            "carFuel",
+            "carTransmission",
+            "carDrive",
+            "carSteeringWheel",
+            "carDoors",
+            "carBodyType",
+            "carMileage",
+            "carColor",
+            "carPrice",
+            "sellerPhone",
+            "sellerCity",
+            "auctionDuration",
+            "carPhotoInput"
+        ];
+
+        let selectedPhotoFiles = [];
+        let existingImageDataUrls = [];
+        let editingCarId = localStorage.getItem("editCarId") || "";
+        let editingCar = null;
+
+        fillYearOptions();
+        fillCountryOptions();
+        renderOptionalFeatures();
+        initializeAuctionDateInputs();
+        fillAuctionTimeOptions();
+
+        migrateCarsIfNeeded();
+        loadEditCarIfNeeded();
+
+        function fillYearOptions() {
+            let yearSelect = document.getElementById("carYear");
+            let currentYear = new Date().getFullYear();
+
+            for (let year = currentYear; year >= 1980; year--) {
+                let option = document.createElement("option");
+                option.value = year;
+                option.textContent = year;
+                yearSelect.appendChild(option);
+            }
+        }
+
+        function fillCountryOptions() {
+            let originCountry = document.getElementById("originCountry");
+            let registrationCountry = document.getElementById("registrationCountry");
+
+            for (let i = 0; i < countryOptions.length; i++) {
+                let originOption = document.createElement("option");
+                originOption.value = countryOptions[i];
+                originOption.textContent = countryOptions[i];
+                originCountry.appendChild(originOption);
+
+                let registrationOption = document.createElement("option");
+                registrationOption.value = countryOptions[i];
+                registrationOption.textContent = countryOptions[i];
+                registrationCountry.appendChild(registrationOption);
+            }
+        }
+
+        function featureIdFromText(text) {
+            return "feature-" + text
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, "-")
+                .replace(/^-+|-+$/g, "");
+        }
+
+        function renderOptionalFeatures() {
+            let optionalFeatures = document.getElementById("optionalFeatures");
+            let html = "";
+
+            for (let i = 0; i < optionalFeatureGroups.length; i++) {
+                html += '<div class="feature-group">';
+                html += "<h3>" + optionalFeatureGroups[i].title + "</h3>";
+                html += '<div class="feature-grid">';
+
+                for (let j = 0; j < optionalFeatureGroups[i].items.length; j++) {
+                    let item = optionalFeatureGroups[i].items[j];
+                    let featureId = featureIdFromText(item);
+
+                    html += '<label class="feature-item" for="' + featureId + '">';
+                    html += '<input type="checkbox" id="' + featureId + '" value="' + item + '">';
+                    html += "<span>" + item + "</span>";
+                    html += "</label>";
+                }
+
+                html += "</div>";
+                html += "</div>";
+            }
+
+            optionalFeatures.innerHTML = html;
+        }
+
+        function getSelectedFeatures() {
+            let checkedItems = document.querySelectorAll('#optionalFeatures input[type="checkbox"]:checked');
+            let selectedFeatures = [];
+
+            for (let i = 0; i < checkedItems.length; i++) {
+                selectedFeatures.push(checkedItems[i].value);
+            }
+
+            return selectedFeatures;
+        }
+
+        function setSelectedFeatures(features) {
+            let featureMap = Array.isArray(features) ? features : [];
+            let checkboxes = document.querySelectorAll('#optionalFeatures input[type="checkbox"]');
+
+            for (let i = 0; i < checkboxes.length; i++) {
+                checkboxes[i].checked = featureMap.includes(checkboxes[i].value);
+            }
+        }
+
+        function getGenerationValue() {
+            let generationSelect = document.getElementById("carGeneration");
+            let generationCustom = document.getElementById("carGenerationCustom");
+
+            if (generationSelect.value === "__custom__") {
+                return generationCustom.value.trim();
+            }
+
+            return generationSelect.value.trim();
+        }
+
+        function getAuctionDurationValue() {
+            let auctionDuration = document.getElementById("auctionDuration");
+            let auctionEndDate = document.getElementById("auctionEndDate");
+            let auctionEndHour = document.getElementById("auctionEndHour");
+            let auctionEndMinute = document.getElementById("auctionEndMinute");
+
+            if (auctionDuration.value === "custom") {
+                return (auctionEndDate.value.trim() + " " + auctionEndHour.value.trim() + ":" + auctionEndMinute.value.trim()).trim();
+            }
+
+            return auctionDuration.value.trim();
+        }
+
+        function initializeAuctionDateInputs() {
+            let auctionEndDate = document.getElementById("auctionEndDate");
+            let today = new Date();
+            let year = today.getFullYear();
+            let month = String(today.getMonth() + 1).padStart(2, "0");
+            let day = String(today.getDate()).padStart(2, "0");
+
+            auctionEndDate.min = year + "-" + month + "-" + day;
+        }
+
+        function fillAuctionTimeOptions() {
+            let auctionEndHour = document.getElementById("auctionEndHour");
+            let auctionEndMinute = document.getElementById("auctionEndMinute");
+
+            for (let hour = 0; hour <= 23; hour++) {
+                let option = document.createElement("option");
+                option.value = String(hour).padStart(2, "0");
+                option.textContent = String(hour).padStart(2, "0");
+                auctionEndHour.appendChild(option);
+            }
+
+            for (let minute = 0; minute <= 59; minute++) {
+                let option = document.createElement("option");
+                option.value = String(minute).padStart(2, "0");
+                option.textContent = String(minute).padStart(2, "0");
+                auctionEndMinute.appendChild(option);
+            }
+        }
+
+        function handleAuctionDateChange() {
+            let auctionEndDate = document.getElementById("auctionEndDate");
+            let auctionTimeWrap = document.getElementById("auctionTimeWrap");
+            let auctionEndHour = document.getElementById("auctionEndHour");
+            let auctionEndMinute = document.getElementById("auctionEndMinute");
+
+            if (auctionEndDate.value) {
+                auctionTimeWrap.classList.remove("auction-time-hidden");
+            } else {
+                auctionTimeWrap.classList.add("auction-time-hidden");
+                auctionEndHour.value = "";
+                auctionEndMinute.value = "";
+            }
+        }
+
+        function handleAuctionDurationChange() {
+            let auctionDuration = document.getElementById("auctionDuration");
+            let auctionCustomFields = document.getElementById("auctionCustomFields");
+            let auctionEndDate = document.getElementById("auctionEndDate");
+            let auctionEndHour = document.getElementById("auctionEndHour");
+            let auctionEndMinute = document.getElementById("auctionEndMinute");
+            let auctionTimeWrap = document.getElementById("auctionTimeWrap");
+
+            if (auctionDuration.value === "custom") {
+                auctionCustomFields.classList.add("active");
+                initializeAuctionDateInputs();
+                auctionEndDate.required = true;
+                auctionEndHour.required = true;
+                auctionEndMinute.required = true;
+                handleAuctionDateChange();
+            } else {
+                auctionCustomFields.classList.remove("active");
+                auctionEndDate.value = "";
+                auctionEndHour.value = "";
+                auctionEndMinute.value = "";
+                auctionEndDate.required = false;
+                auctionEndHour.required = false;
+                auctionEndMinute.required = false;
+                auctionTimeWrap.classList.add("auction-time-hidden");
+            }
+        }
+
+        function calculateAuctionEndAt() {
+            let auctionDuration = document.getElementById("auctionDuration").value;
+            let auctionEndDate = document.getElementById("auctionEndDate").value;
+            let auctionEndHour = document.getElementById("auctionEndHour").value;
+            let auctionEndMinute = document.getElementById("auctionEndMinute").value;
+            let now = new Date();
+
+            if (!auctionDuration) {
+                return "";
+            }
+
+            if (auctionDuration === "custom") {
+                if (!auctionEndDate || !auctionEndHour || !auctionEndMinute) {
+                    return "";
+                }
+
+                let customDate = new Date(auctionEndDate + "T" + auctionEndHour + ":" + auctionEndMinute);
+
+                if (Number.isNaN(customDate.getTime()) || customDate <= now) {
+                    return "";
+                }
+
+                return customDate.toISOString();
+            }
+
+            let presetDate = new Date(now);
+            presetDate.setDate(presetDate.getDate() + parseInt(auctionDuration, 10));
+            return presetDate.toISOString();
+        }
+
+        function handleGenerationChange() {
+            let generationSelect = document.getElementById("carGeneration");
+            let generationCustom = document.getElementById("carGenerationCustom");
+
+            if (generationSelect.value === "__custom__") {
+                generationCustom.style.display = "block";
+                generationCustom.focus();
+            } else {
+                generationCustom.style.display = "none";
+                generationCustom.value = "";
+            }
+        }
+
+        function updateGenerationOptions() {
+            let brand = document.getElementById("carBrand").value;
+            let model = document.getElementById("carModel").value;
+            let year = parseInt(document.getElementById("carYear").value, 10);
+            let generationSelect = document.getElementById("carGeneration");
+            let generationCustom = document.getElementById("carGenerationCustom");
+            let generationKey = brand + "|" + model;
+            let suggestions = generationSuggestions[generationKey] || [];
+            let previousValue = getGenerationValue();
+
+            generationSelect.innerHTML = '<option value="">Pasirink modelio karta</option>';
+            generationCustom.style.display = "none";
+            generationCustom.value = "";
+
+            if (!brand || !model) {
+                return;
+            }
+
+            let filteredSuggestions = suggestions.filter(function(item) {
+                if (!year) {
+                    return true;
+                }
+
+                return year >= item.from && year <= item.to;
+            });
+
+            if (filteredSuggestions.length === 0) {
+                filteredSuggestions = suggestions;
+            }
+
+            for (let i = 0; i < filteredSuggestions.length; i++) {
+                let option = document.createElement("option");
+                option.value = filteredSuggestions[i].label;
+                option.textContent = filteredSuggestions[i].label;
+                generationSelect.appendChild(option);
+            }
+
+            let customOption = document.createElement("option");
+            customOption.value = "__custom__";
+            customOption.textContent = "Kita / irasyti ranka";
+            generationSelect.appendChild(customOption);
+
+            if (!previousValue) {
+                return;
+            }
+
+            let matchingSuggestion = filteredSuggestions.some(function(item) {
+                return item.label === previousValue;
+            });
+
+            if (matchingSuggestion) {
+                generationSelect.value = previousValue;
+                return;
+            }
+
+            generationSelect.value = "__custom__";
+            generationCustom.style.display = "block";
+            generationCustom.value = previousValue;
+        }
+
+        function getCars() {
+            let cars = JSON.parse(localStorage.getItem("auctionCars"));
+
+            if (!Array.isArray(cars) || cars.length === 0) {
+                localStorage.setItem("auctionCars", JSON.stringify(defaultCars));
+                return [...defaultCars];
+            }
+
+            return cars;
+        }
+
+        function saveCars(cars) {
+            localStorage.setItem("auctionCars", JSON.stringify(cars));
+        }
+
+        function openImageDb() {
+            return new Promise(function(resolve, reject) {
+                let request = indexedDB.open(CAR_IMAGE_DB_NAME, 1);
+
+                request.onupgradeneeded = function(event) {
+                    let db = event.target.result;
+
+                    if (!db.objectStoreNames.contains(CAR_IMAGE_STORE_NAME)) {
+                        db.createObjectStore(CAR_IMAGE_STORE_NAME);
+                    }
+                };
+
+                request.onsuccess = function() {
+                    resolve(request.result);
+                };
+
+                request.onerror = function() {
+                    reject(request.error);
+                };
+            });
+        }
+
+        function saveCarImagesToDb(carId, images) {
+            return openImageDb().then(function(db) {
+                return new Promise(function(resolve, reject) {
+                    let transaction = db.transaction(CAR_IMAGE_STORE_NAME, "readwrite");
+                    let store = transaction.objectStore(CAR_IMAGE_STORE_NAME);
+
+                    store.put(images, carId);
+
+                    transaction.oncomplete = function() {
+                        db.close();
+                        resolve();
+                    };
+
+                    transaction.onerror = function() {
+                        db.close();
+                        reject(transaction.error);
+                    };
+                });
+            });
+        }
+
+        function getCarImagesFromDb(carId) {
+            return openImageDb().then(function(db) {
+                return new Promise(function(resolve, reject) {
+                    let transaction = db.transaction(CAR_IMAGE_STORE_NAME, "readonly");
+                    let store = transaction.objectStore(CAR_IMAGE_STORE_NAME);
+                    let request = store.get(carId);
+
+                    request.onsuccess = function() {
+                        db.close();
+                        resolve(Array.isArray(request.result) ? request.result : []);
+                    };
+
+                    request.onerror = function() {
+                        db.close();
+                        reject(request.error);
+                    };
+                });
+            });
+        }
+
+        function getCurrentUserName() {
+            if (localStorage.getItem("loggedIn") !== "true") {
+                return "";
+            }
+
+            return localStorage.getItem("currentUserName") || localStorage.getItem("userName") || "";
+        }
+
+        async function migrateCarsIfNeeded() {
+            let cars = getCars();
+            let changed = false;
+
+            for (let i = 0; i < cars.length; i++) {
+                let car = cars[i];
+                let embeddedImages = [];
+
+                if (Array.isArray(car.images) && car.images.length > 0 && typeof car.images[0] === "string" && car.images[0].startsWith("data:")) {
+                    embeddedImages = car.images;
+                } else if (car.image && typeof car.image === "string" && car.image.startsWith("data:")) {
+                    embeddedImages = [car.image];
+                }
+
+                if (embeddedImages.length > 0) {
+                    await saveCarImagesToDb(car.id, embeddedImages);
+                    car.image = "";
+                    car.images = [];
+                    car.imageCount = embeddedImages.length;
+                    changed = true;
+                }
+            }
+
+            if (changed) {
+                saveCars(cars);
+            }
+        }
+
+        async function loadEditCarIfNeeded() {
+            if (!editingCarId) {
+                return;
+            }
+
+            let cars = getCars();
+            let currentUserName = getCurrentUserName();
+
+            editingCar = cars.find(function(car) {
+                return car.id === editingCarId;
+            });
+
+            if (!editingCar || editingCar.ownerName !== currentUserName) {
+                localStorage.removeItem("editCarId");
+                alert("Redaguoti gali tik automobilio savininkas.");
+                window.location.href = "index.html";
+                return;
+            }
+
+            document.getElementById("pageTitle").innerText = "Redaguoti automobili";
+            document.getElementById("pageDescription").innerText = "Pakeisk duomenis, nuotraukas ar kaina ir issaugok atnaujinta skelbima.";
+            document.getElementById("saveButton").innerText = "Issaugoti pakeitimus";
+
+            document.getElementById("carBrand").value = editingCar.brand || "";
+            updateModelOptions();
+            document.getElementById("carModel").value = editingCar.model || "";
+            toggleDetailsSection();
+
+            document.getElementById("carYear").value = editingCar.year || "";
+            updateGenerationOptions();
+            if (editingCar.generation) {
+                let generationSelect = document.getElementById("carGeneration");
+                let generationCustom = document.getElementById("carGenerationCustom");
+                let hasMatchingOption = Array.from(generationSelect.options).some(function(option) {
+                    return option.value === editingCar.generation;
+                });
+
+                if (hasMatchingOption) {
+                    generationSelect.value = editingCar.generation;
+                } else {
+                    generationSelect.value = "__custom__";
+                    generationCustom.style.display = "block";
+                    generationCustom.value = editingCar.generation;
+                }
+            }
+            document.getElementById("carPower").value = editingCar.power || "";
+            document.getElementById("carPowerUnit").value = editingCar.powerUnit || "AG";
+            document.getElementById("carFuel").value = editingCar.fuel || "";
+            document.getElementById("carTransmission").value = editingCar.transmission || "";
+            document.getElementById("carDrive").value = editingCar.drive || "";
+            document.getElementById("carSteeringWheel").value = editingCar.steeringWheel || "";
+            document.getElementById("carDoors").value = editingCar.doors || "";
+            document.getElementById("carBodyType").value = editingCar.bodyType || "";
+            document.getElementById("carMileage").value = editingCar.mileage || "";
+            document.getElementById("carColor").value = editingCar.color || "";
+            document.getElementById("carPrice").value = editingCar.price || "";
+            document.getElementById("sellerPhone").value = editingCar.sellerPhone || "";
+            document.getElementById("sellerCity").value = editingCar.sellerCity || "";
+            document.getElementById("originCountry").value = editingCar.originCountry || "";
+            document.getElementById("registrationCountry").value = editingCar.registrationCountry || "";
+            document.getElementById("carComment").value = editingCar.comment || "";
+            document.getElementById("auctionDuration").value = editingCar.auctionDurationOption || "";
+            handleAuctionDurationChange();
+
+            if (editingCar.auctionDurationOption === "custom" && editingCar.auctionEndAt) {
+                let auctionEndDate = new Date(editingCar.auctionEndAt);
+
+                if (!Number.isNaN(auctionEndDate.getTime())) {
+                    let year = auctionEndDate.getFullYear();
+                    let month = String(auctionEndDate.getMonth() + 1).padStart(2, "0");
+                    let day = String(auctionEndDate.getDate()).padStart(2, "0");
+                    let hours = String(auctionEndDate.getHours()).padStart(2, "0");
+                    let minutes = String(auctionEndDate.getMinutes()).padStart(2, "0");
+
+                    document.getElementById("auctionEndDate").value = year + "-" + month + "-" + day;
+                    handleAuctionDateChange();
+                    document.getElementById("auctionEndHour").value = hours;
+                    document.getElementById("auctionEndMinute").value = minutes;
+                }
+            }
+
+            setSelectedFeatures(editingCar.features || []);
+
+            existingImageDataUrls = await getCarImagesFromDb(editingCar.id);
+
+            if (existingImageDataUrls.length === 0) {
+                if (Array.isArray(editingCar.images) && editingCar.images.length > 0) {
+                    existingImageDataUrls = editingCar.images.slice();
+                } else if (editingCar.image) {
+                    existingImageDataUrls = [editingCar.image];
+                }
+            }
+
+            renderPhotoSelection();
+        }
+
+        function updateModelOptions() {
+            let brand = document.getElementById("carBrand").value;
+            let modelSection = document.getElementById("modelSection");
+            let modelSelect = document.getElementById("carModel");
+            let detailsSection = document.getElementById("detailsSection");
+            let generationSelect = document.getElementById("carGeneration");
+            let generationCustom = document.getElementById("carGenerationCustom");
+
+            modelSelect.innerHTML = "";
+            detailsSection.style.display = "none";
+            generationSelect.innerHTML = '<option value="">Pasirink modelio karta</option>';
+            generationCustom.value = "";
+            generationCustom.style.display = "none";
+
+            if (!brand || !brandModels[brand]) {
+                modelSection.style.display = "none";
+                modelSelect.innerHTML = '<option value="">Pirma pasirink automobilio marke</option>';
+                return;
+            }
+
+            modelSection.style.display = "block";
+            modelSelect.innerHTML = '<option value="">Pasirink automobilio modeli</option>';
+
+            for (let i = 0; i < brandModels[brand].length; i++) {
+                let option = document.createElement("option");
+                option.value = brandModels[brand][i];
+                option.textContent = brandModels[brand][i];
+                modelSelect.appendChild(option);
+            }
+        }
+
+        function toggleDetailsSection() {
+            let model = document.getElementById("carModel").value;
+            let detailsSection = document.getElementById("detailsSection");
+            document.getElementById("carGeneration").innerHTML = '<option value="">Pasirink modelio karta</option>';
+            document.getElementById("carGenerationCustom").value = "";
+            document.getElementById("carGenerationCustom").style.display = "none";
+
+            if (model) {
+                detailsSection.style.display = "block";
+                updateGenerationOptions();
+            } else {
+                detailsSection.style.display = "none";
+            }
+        }
+
+        function showFieldError(fieldId) {
+            let field = document.getElementById(fieldId);
+            let error = document.getElementById("error-" + fieldId);
+
+            if (fieldId === "carPhotoInput") {
+                document.querySelector(".upload-trigger").classList.add("input-error");
+            } else if (field) {
+                field.classList.add("input-error");
+            }
+
+            if (error) {
+                error.style.display = "inline";
+            }
+        }
+
+        function clearFieldError(fieldId) {
+            let field = document.getElementById(fieldId);
+            let error = document.getElementById("error-" + fieldId);
+
+            if (fieldId === "carPhotoInput") {
+                if (selectedPhotoFiles.length > 0 || existingImageDataUrls.length > 0) {
+                    document.querySelector(".upload-trigger").classList.remove("input-error");
+                }
+            } else if (field && hasValue(fieldId)) {
+                field.classList.remove("input-error");
+            }
+
+            if (error && hasValue(fieldId)) {
+                error.style.display = "none";
+            }
+        }
+
+        function hasValue(fieldId) {
+            let field = document.getElementById(fieldId);
+
+            if (fieldId === "carPhotoInput") {
+                return selectedPhotoFiles.length > 0 || existingImageDataUrls.length > 0;
+            }
+
+            if (fieldId === "auctionDuration") {
+                return calculateAuctionEndAt() !== "";
+            }
+
+            if (!field) {
+                return false;
+            }
+
+            if (fieldId === "carGeneration") {
+                return getGenerationValue() !== "";
+            }
+
+            return field.value.trim() !== "";
+        }
+
+        function validateRequiredFields() {
+            let isValid = true;
+
+            for (let i = 0; i < requiredFields.length; i++) {
+                let fieldId = requiredFields[i];
+
+                if (fieldId === "carModel" && document.getElementById("modelSection").style.display === "none") {
+                    continue;
+                }
+
+                if (fieldId !== "carBrand" && fieldId !== "carModel" && document.getElementById("detailsSection").style.display === "none" && fieldId !== "carPhotoInput") {
+                    continue;
+                }
+
+                if (!hasValue(fieldId)) {
+                    showFieldError(fieldId);
+                    isValid = false;
+                } else {
+                    clearFieldError(fieldId);
+                }
+            }
+
+            return isValid;
+        }
+
+        function handlePhotoSelection(event) {
+            let newFiles = Array.from(event.target.files || []);
+
+            for (let i = 0; i < newFiles.length; i++) {
+                let alreadyAdded = selectedPhotoFiles.some(function(existingFile) {
+                    return existingFile.name === newFiles[i].name &&
+                        existingFile.size === newFiles[i].size &&
+                        existingFile.lastModified === newFiles[i].lastModified;
+                });
+
+                if (!alreadyAdded) {
+                    selectedPhotoFiles.push(newFiles[i]);
+                }
+            }
+
+            document.getElementById("carPhotoInput").value = "";
+            renderPhotoSelection();
+            clearFieldError("carPhotoInput");
+        }
+
+        function removeSelectedPhoto(index) {
+            selectedPhotoFiles.splice(index, 1);
+            renderPhotoSelection();
+            clearFieldError("carPhotoInput");
+        }
+
+        function removeExistingPhoto(index) {
+            existingImageDataUrls.splice(index, 1);
+            renderPhotoSelection();
+        }
+
+        function renderPhotoSelection() {
+            let previewBox = document.getElementById("previewBox");
+            let uploadText = document.getElementById("uploadText");
+            let fileList = document.getElementById("fileList");
+            let totalPhotos = existingImageDataUrls.length + selectedPhotoFiles.length;
+
+            if (totalPhotos === 0) {
+                uploadText.innerText = "Gali prideti daugiau nei viena nuotrauka";
+                fileList.innerHTML = "";
+                previewBox.innerText = "Nuotrauku perziura atsiras cia";
+                return;
+            }
+
+            if (totalPhotos === 1) {
+                uploadText.innerText = "Pasirinkta 1 nuotrauka";
+            } else {
+                uploadText.innerText = "Pasirinktos " + totalPhotos + " nuotraukos";
+            }
+
+            fileList.innerHTML = "";
+            for (let i = 0; i < existingImageDataUrls.length; i++) {
+                let existingRow = document.createElement("div");
+                existingRow.className = "file-row";
+                existingRow.innerHTML =
+                    '<span class="file-name">' + (i + 1) + '. Esama nuotrauka</span>' +
+                    '<button type="button" class="remove-file-btn" onclick="removeExistingPhoto(' + i + ')">Salinti</button>';
+                fileList.appendChild(existingRow);
+            }
+
+            for (let i = 0; i < selectedPhotoFiles.length; i++) {
+                let fileRow = document.createElement("div");
+                fileRow.className = "file-row";
+                fileRow.innerHTML =
+                    '<span class="file-name">' + (existingImageDataUrls.length + i + 1) + ". " + selectedPhotoFiles[i].name + '</span>' +
+                    '<button type="button" class="remove-file-btn" onclick="removeSelectedPhoto(' + i + ')">Salinti</button>';
+                fileList.appendChild(fileRow);
+            }
+
+            previewBox.innerHTML = '<div class="preview-grid" id="previewGrid"></div>';
+            let previewGrid = document.getElementById("previewGrid");
+
+            for (let i = 0; i < existingImageDataUrls.length; i++) {
+                let existingImage = document.createElement("img");
+                existingImage.src = existingImageDataUrls[i];
+                existingImage.alt = "Automobilio nuotrauka " + (i + 1);
+                previewGrid.appendChild(existingImage);
+            }
+
+            for (let i = 0; i < selectedPhotoFiles.length; i++) {
+                let reader = new FileReader();
+
+                reader.onload = function(loadEvent) {
+                    let image = document.createElement("img");
+                    image.src = loadEvent.target.result;
+                    image.alt = "Automobilio nuotrauka " + (i + 1);
+                    previewGrid.appendChild(image);
+                };
+
+                reader.readAsDataURL(selectedPhotoFiles[i]);
+            }
+        }
+
+        function readFilesAsDataUrls(files) {
+            return Promise.all(files.map(function(file) {
+                return new Promise(function(resolve) {
+                    let reader = new FileReader();
+                    reader.onload = function(loadEvent) {
+                        resolve(loadEvent.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }));
+        }
+
+        async function saveUploadedPhoto() {
+            let loggedIn = localStorage.getItem("loggedIn");
+            let currentUserName = getCurrentUserName();
+            let brand = document.getElementById("carBrand").value;
+            let model = document.getElementById("carModel").value;
+            let year = document.getElementById("carYear").value;
+            let generation = getGenerationValue();
+            let power = document.getElementById("carPower").value.trim();
+            let powerUnit = document.getElementById("carPowerUnit").value;
+            let fuel = document.getElementById("carFuel").value;
+            let transmission = document.getElementById("carTransmission").value;
+            let drive = document.getElementById("carDrive").value;
+            let steeringWheel = document.getElementById("carSteeringWheel").value;
+            let doors = document.getElementById("carDoors").value;
+            let bodyType = document.getElementById("carBodyType").value;
+            let mileage = document.getElementById("carMileage").value.trim();
+            let color = document.getElementById("carColor").value.trim();
+            let price = document.getElementById("carPrice").value.trim();
+            let sellerPhone = document.getElementById("sellerPhone").value.trim();
+            let sellerCity = document.getElementById("sellerCity").value.trim();
+            let originCountry = document.getElementById("originCountry").value;
+            let registrationCountry = document.getElementById("registrationCountry").value;
+            let comment = document.getElementById("carComment").value.trim();
+            let auctionDurationOption = document.getElementById("auctionDuration").value;
+            let auctionEndAt = calculateAuctionEndAt();
+            let selectedFeatures = getSelectedFeatures();
+
+            if (loggedIn !== "true" || !currentUserName) {
+                alert("Norint ikelti automobili, pirma reikia prisijungti.");
+                window.location.href = "login.html";
+                return;
+            }
+
+            if (!validateRequiredFields()) {
+                alert("Uzpildyk laukus, prie kuriu rodomas raudonas sauktukas.");
+                return;
+            }
+
+            if (!auctionEndAt) {
+                showFieldError("auctionDuration");
+                alert("Pasirink tinkama aukciono trukme arba nurodyk ateities data ir laika.");
+                return;
+            }
+
+            let cars = getCars();
+            let imageList = existingImageDataUrls.concat(await readFilesAsDataUrls(selectedPhotoFiles));
+
+            let carData = {
+                brand: brand,
+                model: model,
+                title: brand + " " + model,
+                year: year,
+                generation: generation,
+                power: power,
+                powerUnit: powerUnit,
+                fuel: fuel,
+                transmission: transmission,
+                drive: drive,
+                steeringWheel: steeringWheel,
+                doors: doors,
+                bodyType: bodyType,
+                mileage: mileage,
+                color: color,
+                sellerPhone: sellerPhone,
+                sellerCity: sellerCity,
+                originCountry: originCountry,
+                registrationCountry: registrationCountry,
+                features: selectedFeatures,
+                ownerName: currentUserName,
+                comment: comment,
+                auctionDurationOption: auctionDurationOption,
+                auctionEndAt: auctionEndAt,
+                price: parseInt(price, 10),
+                image: "",
+                images: [],
+                imageCount: imageList.length
+            };
+
+            try {
+                if (editingCarId) {
+                    let carIndex = cars.findIndex(function(car) {
+                        return car.id === editingCarId;
+                    });
+
+                    if (carIndex === -1 || cars[carIndex].ownerName !== currentUserName) {
+                        alert("Redaguoti gali tik automobilio savininkas.");
+                        localStorage.removeItem("editCarId");
+                        window.location.href = "index.html";
+                        return;
+                    }
+
+                    cars[carIndex] = {
+                        ...cars[carIndex],
+                        ...carData,
+                        id: editingCarId
+                    };
+
+                    await saveCarImagesToDb(editingCarId, imageList);
+                    saveCars(cars);
+                    localStorage.setItem("selectedCarId", editingCarId);
+                    localStorage.removeItem("editCarId");
+                    alert("Automobilio informacija atnaujinta.");
+                } else {
+                    let newCar = {
+                        id: "user-car-" + Date.now(),
+                        ...carData
+                    };
+
+                    await saveCarImagesToDb(newCar.id, imageList);
+                    cars.unshift(newCar);
+                    saveCars(cars);
+                    localStorage.setItem("selectedCarId", newCar.id);
+                    alert("Automobilis issaugotas ir ikeltas i pagrindini puslapi.");
+                }
+
+                window.location.href = "index.html";
+            } catch (error) {
+                console.error(error);
+                alert("Nepavyko issaugoti nuotrauku. Pabandyk ikelti maziau arba mazesnes nuotraukas.");
+            }
+        }
+    </script>
+</body>
+</html>
